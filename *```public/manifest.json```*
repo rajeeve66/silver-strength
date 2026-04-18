@@ -1,0 +1,27 @@
+```{
+  "name": "Silver Strength: 60+ Fitness",
+  "short_name": "SilverStrength",
+  "description": "Professional 5-day weight training and nutrition for Indian men 60+.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f97316",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}```
+6. Tap *"Commit changes"*.
+*Step 2: Add the Service Worker (For Offline Support)*
+
+PWABuilder requires this for a perfect score.
+1. Inside the same *```public```* folder, click *"Add file"* -> *"Create new file"*.
+
+2. *Name*: ```sw.js```
+3. *Content* (Copy & Paste):
+```self.addEventListener('fetch', function(event) {});```
