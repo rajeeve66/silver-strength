@@ -145,4 +145,4 @@ const foods: ProteinFood[] = [
     calories: 170,
     category: 'veg',
     meals: ['Snack', 'Pre-workout'],
-    tip: 'Natural peanut butter (no sugar added) is great
+    tip: "Natural peanut butter (no sugar added) is great on roti. Peanuts are the most affordable protein source.",
