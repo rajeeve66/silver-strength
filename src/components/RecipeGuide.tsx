@@ -10,6 +10,7 @@ interface Recipe {
   cookTime: number;
   protein: number;
   calories: number;
+  healthTag: 'weight-loss' | 'heart-health' | 'diabetes' | 'bone-joint';
   ingredients: string[];
   steps: string[];
   seniorTip: string;
@@ -27,825 +28,949 @@ const categoryColors: Record<string, string> = {
   snack: 'bg-purple-100 text-purple-700',
 };
 
+const healthColors: Record<string, string> = {
+  'weight-loss': 'bg-orange-100 text-orange-700',
+  'heart-health': 'bg-red-100 text-red-700',
+  'diabetes': 'bg-blue-100 text-blue-700',
+  'bone-joint': 'bg-green-100 text-green-700',
+};
+
+const healthLabels: Record<string, string> = {
+  'weight-loss': '⚖️ Weight Loss',
+  'heart-health': '❤️ Heart Health',
+  'diabetes': '🩺 Diabetes',
+  'bone-joint': '🦴 Bone & Joint',
+};
+
 const ALL_RECIPES: Recipe[] = [
-  // ========== BREAKFAST (25) ==========
-  {
-    id: 'b1', name: 'Moong Dal Chilla', hindiName: 'मूंग दाल चीला',
-    category: 'breakfast', cookTime: 20, protein: 18, calories: 220,
-    ingredients: ['1 cup moong dal (soaked)', '1 onion chopped', '1 green chilli', '1 tsp cumin', 'Salt to taste', '1 tsp oil'],
-    steps: ['Soak moong dal for 2 hours and grind to paste', 'Mix onion, chilli, cumin, salt', 'Pour batter on hot tawa like dosa', 'Cook both sides until golden', 'Serve with green chutney'],
-    seniorTip: 'Easy to digest. Add ginger for better digestion. Skip chilli if stomach is sensitive.',
-    tags: ['high-protein', 'vegetarian', 'weight-loss']
-  },
-  {
-    id: 'b2', name: 'Egg White Omelette', hindiName: 'अंडे का ऑमलेट',
-    category: 'breakfast', cookTime: 10, protein: 22, calories: 180,
-    ingredients: ['4 egg whites', '1 onion chopped', '1 tomato chopped', '1 green chilli', 'Salt and pepper', '1 tsp oil'],
-    steps: ['Whisk egg whites until frothy', 'Heat oil in pan', 'Add onion, tomato, chilli', 'Pour egg whites over vegetables', 'Fold and serve hot'],
-    seniorTip: 'Egg whites are pure protein with zero fat. Add turmeric for anti-inflammatory benefits.',
-    tags: ['high-protein', 'non-veg', 'quick']
-  },
-  {
-    id: 'b3', name: 'Sattu Drink', hindiName: 'सत्तू शर्बत',
-    category: 'breakfast', cookTime: 5, protein: 12, calories: 150,
-    ingredients: ['4 tbsp sattu powder', '1 glass water', '1 lemon juice', 'Black salt', '1 tsp roasted cumin', 'Fresh mint'],
-    steps: ['Mix sattu in water thoroughly', 'Add lemon juice and black salt', 'Add roasted cumin powder', 'Mix well and add ice', 'Garnish with mint and serve'],
-    seniorTip: 'Bihar\'s original protein drink. Cooling for summers, energising for mornings. Best pre-workout drink.',
-    tags: ['high-protein', 'vegetarian', 'quick', 'pre-workout']
-  },
-  {
-    id: 'b4', name: 'Paneer Bhurji', hindiName: 'पनीर भुर्जी',
-    category: 'breakfast', cookTime: 15, protein: 20, calories: 280,
-    ingredients: ['200g paneer crumbled', '1 onion chopped', '2 tomatoes chopped', '1 tsp turmeric', '1 tsp cumin', 'Salt to taste', '1 tsp oil'],
-    steps: ['Heat oil and add cumin', 'Saute onions until golden', 'Add tomatoes and cook', 'Add turmeric and salt', 'Add crumbled paneer and mix', 'Cook 5 minutes and serve'],
-    seniorTip: 'Use homemade paneer for more protein. Eat with whole wheat roti for complete nutrition.',
-    tags: ['high-protein', 'vegetarian', 'filling']
-  },
-  {
-    id: 'b5', name: 'Greek Yogurt Bowl', hindiName: 'हंग कर्ड बाउल',
-    category: 'breakfast', cookTime: 5, protein: 15, calories: 200,
-    ingredients: ['200g hung curd', '1 banana sliced', '1 tbsp honey', '2 tbsp mixed seeds', '5 almonds chopped', 'Pinch of cinnamon'],
-    steps: ['Take hung curd in bowl', 'Add banana slices', 'Drizzle honey', 'Top with seeds and almonds', 'Sprinkle cinnamon and serve'],
-    seniorTip: 'Make hung curd by straining regular dahi overnight. Seeds provide omega-3 for joint health.',
-    tags: ['high-protein', 'vegetarian', 'quick', 'no-cook']
-  },
-  {
-    id: 'b6', name: 'Sprouted Moong Salad', hindiName: 'अंकुरित मूंग सलाद',
-    category: 'breakfast', cookTime: 10, protein: 14, calories: 160,
-    ingredients: ['1 cup sprouted moong', '1 tomato chopped', '1 cucumber chopped', '1 lemon juice', 'Black salt', 'Chaat masala', 'Coriander leaves'],
-    steps: ['Steam sprouts for 5 minutes', 'Mix with vegetables', 'Add lemon juice and spices', 'Toss well', 'Garnish with coriander and serve'],
-    seniorTip: 'Sprouting increases protein by 30%. Steam instead of eating raw for easier digestion at 60+.',
-    tags: ['high-protein', 'vegetarian', 'light', 'weight-loss']
-  },
-  {
-    id: 'b7', name: 'Masala Egg Boiled', hindiName: 'मसाला उबला अंडा',
-    category: 'breakfast', cookTime: 15, protein: 18, calories: 200,
-    ingredients: ['3 eggs', '1 tsp chaat masala', '1 tsp black pepper', 'Black salt', '1 lemon', 'Coriander leaves'],
-    steps: ['Boil eggs for 10 minutes', 'Peel and slice in half', 'Sprinkle chaat masala', 'Add black pepper and salt', 'Squeeze lemon and garnish'],
-    seniorTip: 'Eat the whole egg including yolk — it has Vitamin D critical for bone health in seniors.',
-    tags: ['high-protein', 'non-veg', 'quick']
-  },
-  {
-    id: 'b8', name: 'Besan Cheela', hindiName: 'बेसन चीला',
-    category: 'breakfast', cookTime: 20, protein: 16, calories: 240,
-    ingredients: ['1 cup besan', '1 onion chopped', '1 tomato chopped', '1 tsp ajwain', 'Salt to taste', 'Water to make batter', '1 tsp oil'],
-    steps: ['Mix besan with water to thin batter', 'Add onion, tomato, ajwain, salt', 'Heat tawa and pour batter', 'Cook on medium heat both sides', 'Serve with curd or chutney'],
-    seniorTip: 'Besan is high in protein and fiber. Ajwain aids digestion. Perfect senior breakfast.',
-    tags: ['high-protein', 'vegetarian', 'filling']
-  },
-  {
-    id: 'b9', name: 'Dalia Upma', hindiName: 'दलिया उपमा',
-    category: 'breakfast', cookTime: 25, protein: 12, calories: 280,
-    ingredients: ['1 cup broken wheat dalia', '1 onion', '1 carrot', '1/2 cup peas', '1 tsp mustard seeds', 'Curry leaves', '2 cups water', 'Salt'],
-    steps: ['Roast dalia until golden', 'Temper mustard seeds and curry leaves', 'Add vegetables and saute', 'Add water and salt', 'Add roasted dalia and cook covered', 'Serve hot with curd'],
-    seniorTip: 'Dalia is high fiber and protein. Adding vegetables increases nutrition. Easy on digestion.',
-    tags: ['high-protein', 'vegetarian', 'fiber-rich']
-  },
-  {
-    id: 'b10', name: 'Milk Oats', hindiName: 'दूध ओट्स',
-    category: 'breakfast', cookTime: 10, protein: 14, calories: 320,
-    ingredients: ['1 cup oats', '1.5 cups milk', '1 banana', '1 tbsp peanut butter', '1 tsp honey', 'Cardamom powder'],
-    steps: ['Cook oats in milk on low heat', 'Stir continuously for 5 minutes', 'Add honey and cardamom', 'Top with banana slices', 'Add peanut butter and serve'],
-    seniorTip: 'Peanut butter adds protein and healthy fats. Oats lower cholesterol — important at 60+.',
-    tags: ['high-protein', 'vegetarian', 'heart-healthy']
-  },
-  {
-    id: 'b11', name: 'Soya Milk Smoothie', hindiName: 'सोया मिल्क स्मूदी',
-    category: 'breakfast', cookTime: 5, protein: 20, calories: 250,
-    ingredients: ['250ml soya milk', '1 banana', '2 tbsp peanut butter', '1 tbsp oats', '1 tsp honey', 'Ice cubes'],
-    steps: ['Add all ingredients to blender', 'Blend until smooth', 'Add ice and blend again', 'Pour in glass and serve', 'Drink immediately'],
-    seniorTip: 'Soya milk is complete plant protein. This smoothie gives 20g protein in one glass!',
-    tags: ['high-protein', 'vegetarian', 'quick', 'smoothie']
-  },
-  {
-    id: 'b12', name: 'Idli with Sambar', hindiName: 'इडली सांभर',
-    category: 'breakfast', cookTime: 30, protein: 15, calories: 300,
-    ingredients: ['4 idlis', '1 cup sambar', '1/4 cup toor dal', 'Tamarind', 'Vegetables', 'Sambar masala', 'Coconut chutney'],
-    steps: ['Prepare sambar with toor dal and vegetables', 'Steam idlis until cooked', 'Serve hot idlis with sambar', 'Add coconut chutney on side', 'Serve with hot filter coffee'],
-    seniorTip: 'Fermented idli is probiotic and easy to digest. Sambar with dal provides complete protein.',
-    tags: ['high-protein', 'vegetarian', 'south-indian']
-  },
-  {
-    id: 'b13', name: 'Peanut Chikki Smoothie', hindiName: 'मूंगफली स्मूदी',
-    category: 'breakfast', cookTime: 5, protein: 16, calories: 280,
-    ingredients: ['3 tbsp peanut butter', '1 glass milk', '1 banana', '1 tsp honey', 'Pinch of salt', 'Ice cubes'],
-    steps: ['Blend peanut butter with milk', 'Add banana and honey', 'Add pinch of salt', 'Blend with ice', 'Serve immediately'],
-    seniorTip: 'Natural peanut butter has no added sugar. Peanuts are cheapest and best protein source in India.',
-    tags: ['high-protein', 'vegetarian', 'affordable']
-  },
-  {
-    id: 'b14', name: 'Tofu Scramble', hindiName: 'टोफू भुर्जी',
-    category: 'breakfast', cookTime: 15, protein: 18, calories: 200,
-    ingredients: ['200g firm tofu crumbled', '1 onion', '1 tomato', '1 tsp turmeric', '1 tsp cumin', 'Salt', '1 tsp oil'],
-    steps: ['Press tofu dry and crumble', 'Heat oil and add cumin', 'Saute onions and tomatoes', 'Add turmeric and salt', 'Add crumbled tofu and mix', 'Cook 5 minutes and serve'],
-    seniorTip: 'Tofu has same protein as paneer with fewer calories. Good for weight loss.',
-    tags: ['high-protein', 'vegetarian', 'low-calorie', 'weight-loss']
-  },
-  {
-    id: 'b15', name: 'Rajgira Porridge', hindiName: 'राजगिरा दलिया',
-    category: 'breakfast', cookTime: 15, protein: 10, calories: 220,
-    ingredients: ['1/2 cup rajgira (amaranth)', '1.5 cups milk', '1 tbsp jaggery', 'Cardamom', '5 almonds', '1 tbsp raisins'],
-    steps: ['Cook rajgira in milk on low heat', 'Stir until thick like porridge', 'Add jaggery and cardamom', 'Top with almonds and raisins', 'Serve warm'],
-    seniorTip: 'Rajgira is gluten-free and high calcium — excellent for bone strength in seniors.',
-    tags: ['high-protein', 'vegetarian', 'gluten-free', 'bone-health']
-  },
-  {
-    id: 'b16', name: 'Curd Rice', hindiName: 'दही चावल',
-    category: 'breakfast', cookTime: 10, protein: 10, calories: 280,
-    ingredients: ['1 cup cooked rice', '1 cup thick curd', '1 tsp mustard seeds', 'Curry leaves', '1 green chilli', 'Ginger', 'Salt'],
-    steps: ['Mix rice and curd well', 'Temper mustard seeds and curry leaves', 'Add ginger and chilli to tempering', 'Pour over rice mixture', 'Mix and serve cold'],
-    seniorTip: 'Curd rice is probiotic and cooling. Perfect summer breakfast for seniors in South India.',
-    tags: ['probiotic', 'vegetarian', 'cooling', 'easy-digestion']
-  },
-  {
-    id: 'b17', name: 'Methi Thepla', hindiName: 'मेथी थेपला',
-    category: 'breakfast', cookTime: 25, protein: 12, calories: 260,
-    ingredients: ['1 cup whole wheat flour', '1/2 cup methi leaves', '2 tbsp besan', '1 tsp turmeric', '1 tsp oil', 'Salt', 'Water'],
-    steps: ['Mix flour, besan, methi, spices', 'Add oil and knead dough', 'Make thin rotis', 'Cook on tawa with minimal oil', 'Serve with curd or pickle'],
-    seniorTip: 'Methi controls blood sugar — crucial for diabetic seniors. Besan adds protein to whole wheat.',
-    tags: ['high-protein', 'vegetarian', 'diabetic-friendly']
-  },
-  {
-    id: 'b18', name: 'Rava Upma', hindiName: 'रवा उपमा',
-    category: 'breakfast', cookTime: 20, protein: 10, calories: 280,
-    ingredients: ['1 cup semolina', '1 onion', '1 carrot', 'Green peas', 'Mustard seeds', 'Curry leaves', '2 cups water', 'Ghee'],
-    steps: ['Roast semolina until golden', 'Temper mustard seeds in ghee', 'Add vegetables and saute', 'Add hot water and salt', 'Add semolina and stir well', 'Cover and cook 5 minutes'],
-    seniorTip: 'Add a handful of peanuts for extra protein. Ghee aids absorption of fat-soluble vitamins.',
-    tags: ['vegetarian', 'south-indian', 'quick']
-  },
-  {
-    id: 'b19', name: 'Pesarattu', hindiName: 'पेसरट्टु',
-    category: 'breakfast', cookTime: 20, protein: 16, calories: 230,
-    ingredients: ['1 cup whole green moong', '1 inch ginger', '2 green chillies', '1 onion chopped', 'Cumin seeds', 'Salt', 'Oil'],
-    steps: ['Soak moong overnight and grind', 'Add ginger, chilli, cumin', 'Make thin dosas on tawa', 'Sprinkle onion on top', 'Cook crispy and serve with chutney'],
-    seniorTip: 'Whole moong is more nutritious than split. High protein and fiber. Andhra breakfast favourite.',
-    tags: ['high-protein', 'vegetarian', 'andhra', 'filling']
-  },
-  {
-    id: 'b20', name: 'Fruit Chaat', hindiName: 'फ्रूट चाट',
-    category: 'breakfast', cookTime: 10, protein: 8, calories: 180,
-    ingredients: ['1 apple', '1 banana', '1 orange', '1/2 cup pomegranate', '1 cup curd', 'Chaat masala', 'Black salt', 'Honey'],
-    steps: ['Cut all fruits into pieces', 'Mix with curd', 'Add chaat masala and black salt', 'Drizzle honey', 'Toss and serve chilled'],
-    seniorTip: 'Adding curd converts fruit salad to protein-rich breakfast. Pomegranate is excellent for heart health.',
-    tags: ['vegetarian', 'light', 'heart-healthy', 'antioxidant']
-  },
-  {
-    id: 'b21', name: 'Almond Milk Porridge', hindiName: 'बादाम दूध दलिया',
-    category: 'breakfast', cookTime: 15, protein: 12, calories: 300,
-    ingredients: ['1 cup oats', '1.5 cups almond milk', '10 almonds', '5 walnuts', '1 tbsp honey', 'Cinnamon', 'Cardamom'],
-    steps: ['Heat almond milk in pan', 'Add oats and stir', 'Cook on low for 5 minutes', 'Add honey and spices', 'Top with nuts and serve'],
-    seniorTip: 'Walnuts are best brain food for seniors. Almond milk is dairy-free for lactose intolerant.',
-    tags: ['high-protein', 'vegetarian', 'brain-health']
-  },
-  {
-    id: 'b22', name: 'Poha with Peanuts', hindiName: 'मूंगफली पोहा',
-    category: 'breakfast', cookTime: 15, protein: 12, calories: 290,
-    ingredients: ['1 cup thick poha', '3 tbsp peanuts', '1 onion', '1 potato', 'Turmeric', 'Mustard seeds', 'Lemon', 'Coriander'],
-    steps: ['Rinse poha and drain', 'Fry peanuts until crispy', 'Temper mustard seeds', 'Add potato and onion', 'Add poha and turmeric', 'Mix peanuts and finish with lemon'],
-    seniorTip: 'Peanuts add protein to poha. Use less oil than traditional recipe for weight management.',
-    tags: ['high-protein', 'vegetarian', 'maharashtrian']
-  },
-  {
-    id: 'b23', name: 'Whey Protein Lassi', hindiName: 'व्हे लस्सी',
-    category: 'breakfast', cookTime: 5, protein: 30, calories: 280,
-    ingredients: ['1 scoop whey protein', '200ml curd', '1 banana', '1 cup milk', '1 tsp honey', 'Ice cubes'],
-    steps: ['Blend curd and milk', 'Add whey protein powder', 'Add banana and honey', 'Blend with ice', 'Serve immediately after workout'],
-    seniorTip: 'Take within 30 minutes post workout. This gives 30g protein in one serving — maximum muscle repair.',
-    tags: ['very-high-protein', 'non-veg', 'post-workout']
-  },
-  {
-    id: 'b24', name: 'Sabudana Khichdi', hindiName: 'साबूदाना खिचड़ी',
-    category: 'breakfast', cookTime: 20, protein: 8, calories: 320,
-    ingredients: ['1 cup sabudana', '3 tbsp peanuts', '1 potato', 'Green chilli', 'Cumin', 'Lemon', 'Coriander', 'Salt'],
-    steps: ['Soak sabudana for 4 hours', 'Fry peanuts and crush', 'Fry potato cubes', 'Add cumin and chilli', 'Add sabudana and peanuts', 'Mix and cook 5 minutes'],
-    seniorTip: 'Add more peanuts for protein. Sabudana is easy on stomach. Good for vrat (fasting) days.',
-    tags: ['vegetarian', 'easy-digestion', 'vrat-friendly']
-  },
-  {
-    id: 'b25', name: 'Multigrain Roti with Dal', hindiName: 'मल्टीग्रेन रोटी दाल',
-    category: 'breakfast', cookTime: 20, protein: 16, calories: 340,
-    ingredients: ['1/2 cup wheat flour', '1/4 cup besan', '1/4 cup bajra', '1 cup moong dal', 'Turmeric', 'Salt', 'Ghee'],
-    steps: ['Mix all flours and make dough', 'Make thin rotis on tawa', 'Cook moong dal with turmeric', 'Add salt and temper with ghee', 'Serve roti with dal'],
-    seniorTip: 'Multigrain flour gives complete amino acids. Ghee on roti aids fat-soluble vitamin absorption.',
-    tags: ['high-protein', 'vegetarian', 'complete-nutrition']
-  },
-  // ========== LUNCH (25) ==========
-  {
-    id: 'l1', name: 'Rajma Chawal', hindiName: 'राजमा चावल',
-    category: 'lunch', cookTime: 45, protein: 20, calories: 450,
-    ingredients: ['1 cup rajma (soaked)', '2 tomatoes', '1 onion', 'Ginger garlic paste', 'Rajma masala', 'Brown rice', 'Ghee'],
-    steps: ['Pressure cook rajma for 4 whistles', 'Make onion tomato masala', 'Add cooked rajma to masala', 'Simmer 15 minutes', 'Serve with brown rice and ghee'],
-    seniorTip: 'Rajma + rice is a complete protein meal. Brown rice is better than white for blood sugar control.',
-    tags: ['high-protein', 'vegetarian', 'north-indian', 'complete-meal']
-  },
-  {
-    id: 'l2', name: 'Dal Makhani', hindiName: 'दाल मखनी',
-    category: 'lunch', cookTime: 60, protein: 18, calories: 380,
-    ingredients: ['1/2 cup urad dal', '1/4 cup rajma', 'Tomato puree', 'Cream', 'Butter', 'Garam masala', 'Kasuri methi'],
-    steps: ['Soak dal overnight', 'Pressure cook until soft', 'Make rich tomato gravy', 'Add dal to gravy', 'Simmer 20 minutes', 'Add cream and kasuri methi'],
-    seniorTip: 'Use minimal cream. Urad dal is high protein. Slow cooking makes it very digestible for seniors.',
-    tags: ['high-protein', 'vegetarian', 'punjabi']
-  },
-  {
-    id: 'l3', name: 'Chicken Curry', hindiName: 'चिकन करी',
-    category: 'lunch', cookTime: 45, protein: 35, calories: 380,
-    ingredients: ['300g chicken', '2 onions', '3 tomatoes', 'Yogurt', 'Ginger garlic', 'Chicken masala', 'Oil', 'Coriander'],
-    steps: ['Marinate chicken in yogurt and spices', 'Brown onions in oil', 'Add ginger garlic paste', 'Add tomatoes and cook', 'Add chicken and simmer', 'Garnish with coriander'],
-    seniorTip: 'Remove skin before cooking to reduce fat. Chicken breast has most protein with least fat.',
-    tags: ['very-high-protein', 'non-veg', 'north-indian']
-  },
-  {
-    id: 'l4', name: 'Palak Paneer', hindiName: 'पालक पनीर',
-    category: 'lunch', cookTime: 35, protein: 22, calories: 320,
-    ingredients: ['200g paneer', '2 cups spinach', '2 tomatoes', '1 onion', 'Cream', 'Garam masala', 'Ghee'],
-    steps: ['Blanch and puree spinach', 'Saute onion and tomatoes', 'Add spinach puree', 'Add paneer cubes', 'Simmer 10 minutes', 'Add cream and serve'],
-    seniorTip: 'Spinach is iron-rich — prevents anemia in seniors. Paneer adds calcium for bone strength.',
-    tags: ['high-protein', 'vegetarian', 'iron-rich', 'bone-health']
-  },
-  {
-    id: 'l5', name: 'Fish Curry', hindiName: 'मछली करी',
-    category: 'lunch', cookTime: 35, protein: 30, calories: 280,
-    ingredients: ['300g rohu fish', '2 tomatoes', '1 onion', 'Mustard oil', 'Turmeric', 'Fish masala', 'Curry leaves'],
-    steps: ['Marinate fish with turmeric and salt', 'Fry fish pieces lightly', 'Make onion tomato gravy', 'Add fish to gravy', 'Simmer 10 minutes', 'Serve with rice'],
-    seniorTip: 'Fish omega-3 reduces joint pain and inflammation. Best protein for 60+ adults. Eat fish 3x per week.',
-    tags: ['very-high-protein', 'non-veg', 'omega-3', 'joint-health']
-  },
-  {
-    id: 'l6', name: 'Chana Masala', hindiName: 'छोले मसाला',
-    category: 'lunch', cookTime: 40, protein: 18, calories: 350,
-    ingredients: ['1 cup kabuli chana', '2 tomatoes', '1 onion', 'Chole masala', 'Tea bag for color', 'Ginger', 'Amchur'],
-    steps: ['Soak chana overnight', 'Pressure cook with tea bag', 'Make masala with onion tomato', 'Add chana to masala', 'Add amchur and cook 10 minutes', 'Serve with bhature or rice'],
-    seniorTip: 'Chana is highest protein legume. Amchur aids vitamin C absorption for better iron uptake.',
-    tags: ['high-protein', 'vegetarian', 'punjabi']
-  },
-  {
-    id: 'l7', name: 'Egg Curry', hindiName: 'अंडे की करी',
-    category: 'lunch', cookTime: 30, protein: 24, calories: 300,
-    ingredients: ['4 eggs boiled', '2 onions', '3 tomatoes', 'Egg curry masala', 'Oil', 'Ginger garlic', 'Coriander'],
-    steps: ['Hard boil and peel eggs', 'Make rich onion tomato gravy', 'Add egg curry masala', 'Add eggs to gravy', 'Simmer 10 minutes', 'Garnish and serve'],
-    seniorTip: 'Eggs contain all essential amino acids. This curry is economical and nutritious for seniors.',
-    tags: ['high-protein', 'non-veg', 'affordable']
-  },
-  {
-    id: 'l8', name: 'Soya Chunks Curry', hindiName: 'सोया करी',
-    category: 'lunch', cookTime: 30, protein: 28, calories: 300,
-    ingredients: ['100g soya chunks', '2 tomatoes', '1 onion', 'Ginger garlic', 'Garam masala', 'Oil', 'Curd'],
-    steps: ['Soak soya in hot water 15 minutes', 'Squeeze dry', 'Make onion tomato masala', 'Add soya chunks', 'Add curd and spices', 'Simmer 15 minutes'],
-    seniorTip: 'Soya has highest plant protein. Good meat substitute for vegetarians. Reduces cholesterol.',
-    tags: ['very-high-protein', 'vegetarian', 'cholesterol-friendly']
-  },
-  {
-    id: 'l9', name: 'Dal Tadka', hindiName: 'दाल तड़का',
-    category: 'lunch', cookTime: 30, protein: 16, calories: 280,
-    ingredients: ['1/2 cup arhar dal', '1/4 cup masoor dal', 'Tomato', 'Onion', 'Ghee', 'Cumin', 'Kashmiri chilli', 'Asafoetida'],
-    steps: ['Cook both dals together', 'Make tadka with ghee', 'Add cumin, onion, tomato', 'Add chilli and asafoetida', 'Pour tadka over dal', 'Serve with roti and rice'],
-    seniorTip: 'Two dal combination gives complete amino acid profile. Ghee tadka improves nutrient absorption.',
-    tags: ['high-protein', 'vegetarian', 'dhaba-style', 'complete-protein']
-  },
-  {
-    id: 'l10', name: 'Paneer Tikka Masala', hindiName: 'पनीर टिक्का मसाला',
-    category: 'lunch', cookTime: 40, protein: 24, calories: 380,
-    ingredients: ['250g paneer', 'Bell peppers', 'Onion', 'Tikka masala', 'Curd for marination', 'Tomato gravy', 'Cream', 'Oil'],
-    steps: ['Marinate paneer in spiced curd', 'Grill or pan fry paneer', 'Make rich tomato gravy', 'Add grilled paneer to gravy', 'Simmer and add cream', 'Serve with butter naan'],
-    seniorTip: 'Grilling instead of frying reduces calories. Paneer is best dairy protein for seniors.',
-    tags: ['high-protein', 'vegetarian', 'restaurant-style']
-  },
-  {
-    id: 'l11', name: 'Mutton Soup', hindiName: 'मटन सूप',
-    category: 'lunch', cookTime: 60, protein: 30, calories: 280,
-    ingredients: ['300g mutton with bones', 'Onion', 'Ginger garlic', 'Whole spices', 'Turmeric', 'Black pepper', 'Coriander'],
-    steps: ['Pressure cook mutton with spices', 'Cook for 5-6 whistles', 'Remove bones carefully', 'Strain and add vegetables', 'Simmer 10 minutes', 'Serve hot soup'],
-    seniorTip: 'Bone broth is rich in collagen — excellent for joint health. Easy to eat for seniors with dental issues.',
-    tags: ['very-high-protein', 'non-veg', 'joint-health', 'soft']
-  },
-  {
-    id: 'l12', name: 'Paneer Khichdi', hindiName: 'पनीर खिचड़ी',
-    category: 'lunch', cookTime: 30, protein: 20, calories: 380,
-    ingredients: ['1/2 cup rice', '1/2 cup moong dal', '100g paneer', 'Vegetables', 'Ghee', 'Cumin', 'Turmeric', 'Salt'],
-    steps: ['Cook rice and dal together', 'Add turmeric and salt', 'Fry paneer cubes separately', 'Add vegetables to khichdi', 'Add fried paneer on top', 'Add ghee and serve hot'],
-    seniorTip: 'Khichdi is easiest to digest. Adding paneer makes it complete meal. Perfect for upset stomach.',
-    tags: ['high-protein', 'vegetarian', 'easy-digestion', 'complete-meal']
-  },
-  {
-    id: 'l13', name: 'Tuna Salad', hindiName: 'टूना सलाद',
-    category: 'lunch', cookTime: 10, protein: 28, calories: 220,
-    ingredients: ['1 can tuna', '1 cucumber', '1 tomato', '1 onion', 'Lemon juice', 'Black pepper', 'Olive oil', 'Coriander'],
-    steps: ['Drain tuna from can', 'Chop all vegetables', 'Mix tuna with vegetables', 'Add lemon and pepper', 'Drizzle oil and toss', 'Serve chilled'],
-    seniorTip: 'Canned tuna is convenient high protein. Available at Big Bazaar. Best weight loss lunch.',
-    tags: ['very-high-protein', 'non-veg', 'weight-loss', 'no-cook']
-  },
-  {
-    id: 'l14', name: 'Moong Dal Soup', hindiName: 'मूंग दाल सूप',
-    category: 'lunch', cookTime: 25, protein: 14, calories: 200,
-    ingredients: ['1 cup moong dal', 'Spinach', 'Tomato', 'Ginger', 'Cumin', 'Turmeric', 'Lemon', 'Salt'],
-    steps: ['Cook moong dal until soft', 'Add spinach and cook 5 minutes', 'Blend to smooth soup', 'Add cumin temper', 'Add lemon and salt', 'Serve hot'],
-    seniorTip: 'Moong is easiest to digest of all dals. Ideal lunch for seniors with digestive issues.',
-    tags: ['high-protein', 'vegetarian', 'easy-digestion', 'light']
-  },
-  {
-    id: 'l15', name: 'Brown Rice Chicken Bowl', hindiName: 'ब्राउन राइस चिकन',
-    category: 'lunch', cookTime: 40, protein: 38, calories: 420,
-    ingredients: ['150g chicken breast', '1 cup brown rice', 'Broccoli', 'Carrots', 'Soy sauce', 'Ginger', 'Garlic', 'Sesame oil'],
-    steps: ['Cook brown rice', 'Grill chicken breast', 'Stir fry vegetables with ginger', 'Add soy sauce and sesame oil', 'Slice chicken over rice', 'Add vegetables and serve'],
-    seniorTip: 'This bowl gives 38g protein — complete daily requirement in one meal. Brown rice for sustained energy.',
-    tags: ['very-high-protein', 'non-veg', 'weight-loss', 'gym-food']
-  },
-  {
-    id: 'l16', name: 'Sambar with Idli Rice', hindiName: 'सांभर भात',
-    category: 'lunch', cookTime: 40, protein: 16, calories: 350,
-    ingredients: ['1 cup toor dal', 'Tamarind', 'Drumstick', 'Brinjal', 'Tomatoes', 'Sambar powder', 'Mustard seeds', 'Curry leaves'],
-    steps: ['Cook toor dal with vegetables', 'Add tamarind water', 'Add sambar powder', 'Temper with mustard and curry leaves', 'Simmer 10 minutes', 'Serve with rice'],
-    seniorTip: 'Drumstick in sambar is excellent for bone health. Tamarind is rich in antioxidants for seniors.',
-    tags: ['high-protein', 'vegetarian', 'south-indian', 'bone-health']
-  },
-  {
-    id: 'l17', name: 'Kadhi Chawal', hindiName: 'कढ़ी चावल',
-    category: 'lunch', cookTime: 35, protein: 14, calories: 380,
-    ingredients: ['1 cup curd', '3 tbsp besan', 'Pakoras', 'Turmeric', 'Mustard seeds', 'Dried red chilli', 'Ghee', 'Rice'],
-    steps: ['Whisk curd and besan with water', 'Cook until thick on low heat', 'Make pakoras from besan', 'Add pakoras to kadhi', 'Make tempering with ghee', 'Serve with rice'],
-    seniorTip: 'Curd based kadhi is probiotic. Besan adds protein. Avoid too many pakoras for weight management.',
-    tags: ['high-protein', 'vegetarian', 'probiotic', 'north-indian']
-  },
-  {
-    id: 'l18', name: 'Chicken Soup', hindiName: 'चिकन सूप',
-    category: 'lunch', cookTime: 45, protein: 28, calories: 180,
-    ingredients: ['250g chicken with bones', 'Carrots', 'Onion', 'Celery', 'Black pepper', 'Bay leaves', 'Garlic', 'Salt'],
-    steps: ['Boil chicken with vegetables', 'Cook 30 minutes on medium', 'Remove chicken and shred', 'Strain and clarify broth', 'Add shredded chicken back', 'Serve hot with bread'],
-    seniorTip: 'Chicken soup is easiest protein for seniors with dental issues. Healing for cold and infections.',
-    tags: ['high-protein', 'non-veg', 'healing', 'soft', 'immunity']
-  },
-  {
-    id: 'l19', name: 'Peas Paneer', hindiName: 'मटर पनीर',
-    category: 'lunch', cookTime: 30, protein: 20, calories: 340,
-    ingredients: ['200g paneer', '1 cup peas', '2 tomatoes', '1 onion', 'Ginger garlic', 'Garam masala', 'Oil', 'Cream'],
-    steps: ['Make onion tomato gravy', 'Add peas and cook 5 minutes', 'Add paneer cubes', 'Add garam masala', 'Simmer 10 minutes', 'Add cream and serve'],
-    seniorTip: 'Peas and paneer together provide complete protein. Peas are rich in vitamins A and C.',
-    tags: ['high-protein', 'vegetarian', 'north-indian']
-  },
-  {
-    id: 'l20', name: 'Mixed Dal', hindiName: 'पंचमेल दाल',
-    category: 'lunch', cookTime: 35, protein: 20, calories: 300,
-    ingredients: ['Mix of 5 dals', 'Tomato', 'Onion', 'Ghee', 'Cumin', 'Turmeric', 'Coriander', 'Lemon'],
-    steps: ['Soak all dals 30 minutes', 'Cook together in pressure cooker', 'Make tadka with ghee and spices', 'Add tomato and onion to tadka', 'Mix with dal', 'Serve with roti'],
-    seniorTip: 'Five dal combination gives complete amino acid profile better than single dal. Best protein meal.',
-    tags: ['very-high-protein', 'vegetarian', 'rajasthani', 'complete-protein']
-  },
-  {
-    id: 'l21', name: 'Bhuna Chicken', hindiName: 'भुना चिकन',
-    category: 'lunch', cookTime: 40, protein: 38, calories: 320,
-    ingredients: ['300g chicken', 'Onions', 'Tomatoes', 'Thick curd', 'Bhuna masala', 'Oil', 'Kasuri methi'],
-    steps: ['Marinate chicken in thick masala', 'Cook on high heat until dry', 'Add onion and tomato paste', 'Bhuno until oil separates', 'Add water for gravy', 'Finish with kasuri methi'],
-    seniorTip: 'Dry roasting preserves more protein than boiling. Remove excess oil before serving.',
-    tags: ['very-high-protein', 'non-veg', 'high-flavor', 'north-indian']
-  },
-  {
-    id: 'l22', name: 'Chole Bhature Healthy', hindiName: 'स्वस्थ छोले',
-    category: 'lunch', cookTime: 45, protein: 18, calories: 380,
-    ingredients: ['1 cup kabuli chana', 'Whole spices', 'Onion tomato masala', 'Kulcha bread instead of bhature', 'Pickled onions', 'Lemon'],
-    steps: ['Cook chana with whole spices', 'Make masala gravy', 'Simmer chana in gravy', 'Serve with whole wheat kulcha', 'Add pickled onions', 'Serve with lemon'],
-    seniorTip: 'Kulcha instead of fried bhature reduces calories by 200. Same taste, much healthier!',
-    tags: ['high-protein', 'vegetarian', 'healthier-version']
-  },
-  {
-    id: 'l23', name: 'Steamed Fish', hindiName: 'भाप में पकी मछली',
-    category: 'lunch', cookTime: 20, protein: 32, calories: 180,
-    ingredients: ['300g fish fillet', 'Ginger slices', 'Lemon', 'Turmeric', 'Black pepper', 'Coriander', 'Salt'],
-    steps: ['Marinate fish with spices', 'Place on steamer plate', 'Add ginger slices', 'Steam 12-15 minutes', 'Squeeze lemon', 'Serve with steamed rice'],
-    seniorTip: 'Steaming is healthiest cooking method — preserves maximum omega-3. Zero oil used.',
-    tags: ['very-high-protein', 'non-veg', 'zero-oil', 'omega-3', 'healthy']
-  },
-  {
-    id: 'l24', name: 'Paneer Salad', hindiName: 'पनीर सलाद',
-    category: 'lunch', cookTime: 10, protein: 18, calories: 240,
-    ingredients: ['150g fresh paneer', 'Cucumber', 'Tomato', 'Bell peppers', 'Onion', 'Lemon', 'Black pepper', 'Chaat masala'],
-    steps: ['Cut paneer into cubes', 'Chop all vegetables', 'Mix together', 'Add lemon and spices', 'Toss well', 'Serve immediately'],
-    seniorTip: 'No cooking required. Fresh paneer is highest quality protein. Light and cooling for seniors.',
-    tags: ['high-protein', 'vegetarian', 'no-cook', 'light', 'quick']
-  },
-  {
-    id: 'l25', name: 'Vegetable Pulao with Raita', hindiName: 'वेज पुलाव रायता',
-    category: 'lunch', cookTime: 35, protein: 16, calories: 400,
-    ingredients: ['1 cup basmati rice', 'Mixed vegetables', 'Whole spices', 'Ghee', '1 cup thick curd', 'Cucumber', 'Cumin', 'Mint'],
-    steps: ['Cook pulao with vegetables and spices', 'Make raita with curd and cucumber', 'Add roasted cumin to raita', 'Add mint leaves', 'Serve pulao with raita', 'Add pickle on side'],
-    seniorTip: 'Raita adds protein and probiotics to pulao. Complete and balanced meal for seniors.',
-    tags: ['high-protein', 'vegetarian', 'complete-meal', 'probiotic']
-  },
-  // ========== DINNER (25) ==========
-  {
-    id: 'd1', name: 'Grilled Chicken Tikka', hindiName: 'चिकन टिक्का',
-    category: 'dinner', cookTime: 30, protein: 35, calories: 280,
-    ingredients: ['300g chicken breast', 'Thick curd', 'Tikka masala', 'Lemon juice', 'Ginger garlic paste', 'Oil for basting'],
-    steps: ['Marinate chicken 4 hours', 'Skewer chicken pieces', 'Grill on high heat', 'Baste with oil', 'Cook until charred marks', 'Serve with mint chutney'],
-    seniorTip: 'Grilled chicken is lowest calorie highest protein option. Perfect light dinner for seniors.',
-    tags: ['very-high-protein', 'non-veg', 'low-calorie', 'grilled']
-  },
-  {
-    id: 'd2', name: 'Dal Soup', hindiName: 'दाल सूप',
-    category: 'dinner', cookTime: 25, protein: 14, calories: 180,
-    ingredients: ['1/2 cup masoor dal', 'Spinach', 'Carrot', 'Tomato', 'Garlic', 'Lemon', 'Black pepper', 'Ghee'],
-    steps: ['Cook masoor dal until soft', 'Add vegetables and cook', 'Blend until smooth', 'Heat with ghee and garlic', 'Add pepper and lemon', 'Serve hot'],
-    seniorTip: 'Light soup dinner is ideal for seniors. Easy digestion at night. Promotes good sleep.',
-    tags: ['high-protein', 'vegetarian', 'light', 'easy-digestion', 'good-sleep']
-  },
-  {
-    id: 'd3', name: 'Paneer Bhurji Roti', hindiName: 'पनीर भुर्जी रोटी',
-    category: 'dinner', cookTime: 20, protein: 24, calories: 380,
-    ingredients: ['200g paneer', '1 onion', '2 tomatoes', 'Capsicum', 'Spices', '2 whole wheat rotis', 'Ghee'],
-    steps: ['Crumble paneer finely', 'Saute vegetables', 'Add paneer and spices', 'Cook 5 minutes', 'Serve hot with roti', 'Add ghee on roti'],
-    seniorTip: 'Paneer at dinner provides casein protein for overnight muscle repair. Ideal for 60+ adults.',
-    tags: ['high-protein', 'vegetarian', 'muscle-repair']
-  },
-  {
-    id: 'd4', name: 'Fish Tikka', hindiName: 'मछली टिक्का',
-    category: 'dinner', cookTime: 25, protein: 30, calories: 220,
-    ingredients: ['300g fish fillets', 'Curd', 'Tikka masala', 'Lemon', 'Ginger garlic', 'Mustard oil'],
-    steps: ['Cut fish into cubes', 'Marinate in curd and spices', 'Grill on tawa or oven', 'Cook until golden', 'Squeeze lemon', 'Serve with chutney'],
-    seniorTip: 'Fish tikka is light and high protein. Mustard oil is best for fish marination and has omega-3.',
-    tags: ['very-high-protein', 'non-veg', 'light', 'omega-3']
-  },
-  {
-    id: 'd5', name: 'Moong Dal Khichdi', hindiName: 'मूंग दाल खिचड़ी',
-    category: 'dinner', cookTime: 25, protein: 16, calories: 320,
-    ingredients: ['1/2 cup moong dal', '1/2 cup rice', 'Ghee', 'Cumin', 'Turmeric', 'Asafoetida', 'Salt', 'Pickle'],
-    steps: ['Rinse dal and rice together', 'Pressure cook 2 whistles', 'Make ghee tadka with cumin', 'Add asafoetida and turmeric', 'Mix with khichdi', 'Serve with pickle and curd'],
-    seniorTip: 'Khichdi is called "superfood of India". Easiest to digest. Perfect senior dinner. Add ghee liberally.',
-    tags: ['high-protein', 'vegetarian', 'easy-digestion', 'superfood', 'complete-meal']
-  },
-  {
-    id: 'd6', name: 'Egg Bhurji', hindiName: 'अंडे की भुर्जी',
-    category: 'dinner', cookTime: 15, protein: 22, calories: 260,
-    ingredients: ['3 eggs', '1 onion', '2 tomatoes', '1 green chilli', 'Turmeric', 'Salt', 'Oil', 'Coriander'],
-    steps: ['Beat eggs with salt', 'Saute onion and tomato', 'Add chilli and turmeric', 'Add eggs and scramble', 'Cook on medium heat', 'Garnish with coriander'],
-    seniorTip: 'Quick protein-rich dinner in 15 minutes. Eggs at dinner prevent overnight muscle loss in seniors.',
-    tags: ['high-protein', 'non-veg', 'quick', 'muscle-preservation']
-  },
-  {
-    id: 'd7', name: 'Masoor Dal Tadka', hindiName: 'मसूर दाल तड़का',
-    category: 'dinner', cookTime: 25, protein: 16, calories: 250,
-    ingredients: ['1 cup masoor dal', 'Tomato', 'Onion', 'Garlic', 'Ghee', 'Kashmiri chilli', 'Cumin', 'Lemon'],
-    steps: ['Pressure cook masoor dal', 'Make tadka with ghee and garlic', 'Add onion and cook golden', 'Add tomato and chilli', 'Pour over dal', 'Add lemon and serve'],
-    seniorTip: 'Masoor dal needs no soaking and cooks fastest. Iron-rich — prevents evening fatigue in seniors.',
-    tags: ['high-protein', 'vegetarian', 'iron-rich', 'quick']
-  },
-  {
-    id: 'd8', name: 'Baked Chicken', hindiName: 'बेक्ड चिकन',
-    category: 'dinner', cookTime: 45, protein: 40, calories: 250,
-    ingredients: ['300g chicken', 'Olive oil', 'Garlic', 'Rosemary or ajwain', 'Lemon', 'Black pepper', 'Salt', 'Vegetables'],
-    steps: ['Marinate chicken with spices', 'Place in baking tray with vegetables', 'Bake at 200°C for 35 minutes', 'Check internal temperature', 'Rest 5 minutes before cutting', 'Serve with salad'],
-    seniorTip: 'Baking uses zero oil. Highest protein lowest calorie dinner. Excellent for weight loss.',
-    tags: ['very-high-protein', 'non-veg', 'zero-oil', 'weight-loss']
-  },
-  {
-    id: 'd9', name: 'Vegetable Raita', hindiName: 'वेज रायता',
-    category: 'dinner', cookTime: 10, protein: 10, calories: 160,
-    ingredients: ['2 cups thick curd', 'Cucumber', 'Tomato', 'Onion', 'Roasted cumin', 'Black salt', 'Coriander', 'Mint'],
-    steps: ['Whisk curd smooth', 'Add chopped vegetables', 'Add roasted cumin and black salt', 'Mix well', 'Refrigerate 15 minutes', 'Garnish with mint and serve'],
-    seniorTip: 'Light protein dinner. Curd promotes sleep and muscle recovery at night. Add if not sleeping well.',
-    tags: ['high-protein', 'vegetarian', 'light', 'probiotic', 'good-sleep']
-  },
-  {
-    id: 'd10', name: 'Lauki Dal', hindiName: 'लौकी दाल',
-    category: 'dinner', cookTime: 30, protein: 14, calories: 220,
-    ingredients: ['1/2 cup toor dal', '1 cup lauki', 'Tomato', 'Turmeric', 'Cumin', 'Ghee', 'Coriander', 'Lemon'],
-    steps: ['Pressure cook dal with lauki', 'Add tomato and turmeric', 'Make ghee tadka', 'Add cumin and coriander', 'Mix with dal', 'Add lemon and serve'],
-    seniorTip: 'Lauki is excellent for kidney health and digestion. Very light dinner — good for hypertension.',
-    tags: ['high-protein', 'vegetarian', 'kidney-friendly', 'hypertension', 'light']
-  },
-  {
-    id: 'd11', name: 'Tandoori Roti with Dal', hindiName: 'तंदूरी रोटी दाल',
-    category: 'dinner', cookTime: 30, protein: 18, calories: 360,
-    ingredients: ['Whole wheat dough', '1 cup mixed dal', 'Ghee', 'Onion', 'Tomato', 'Spices', 'Coriander'],
-    steps: ['Cook mixed dal with spices', 'Make tandoori roti on tawa', 'Apply ghee on hot roti', 'Serve with dal', 'Add raw onion on side', 'Finish with coriander'],
-    seniorTip: 'Traditional Indian dinner. Whole wheat roti is better than maida. Dal provides complete protein.',
-    tags: ['high-protein', 'vegetarian', 'traditional', 'complete-meal']
-  },
-  {
-    id: 'd12', name: 'Chicken Stew', hindiName: 'चिकन स्टू',
-    category: 'dinner', cookTime: 45, protein: 32, calories: 300,
-    ingredients: ['250g chicken', 'Potatoes', 'Carrots', 'Onion', 'Coconut milk', 'Whole spices', 'Pepper', 'Salt'],
-    steps: ['Cook chicken in water with spices', 'Add vegetables and cook', 'Add coconut milk', 'Simmer until thick', 'Adjust seasoning', 'Serve with appam or bread'],
-    seniorTip: 'Kerala stew is very gentle on digestion. Coconut milk provides healthy fats for seniors.',
-    tags: ['very-high-protein', 'non-veg', 'kerala', 'gentle-digestion']
-  },
-  {
-    id: 'd13', name: 'Paneer Soup', hindiName: 'पनीर सूप',
-    category: 'dinner', cookTime: 20, protein: 18, calories: 200,
-    ingredients: ['150g paneer', 'Vegetable broth', 'Carrots', 'Beans', 'Garlic', 'Black pepper', 'Cornflour', 'Salt'],
-    steps: ['Prepare vegetable broth', 'Add diced paneer', 'Add vegetables and garlic', 'Thicken with cornflour', 'Add black pepper', 'Serve piping hot'],
-    seniorTip: 'Warm soup dinner helps sleep. Paneer provides complete protein for overnight recovery.',
-    tags: ['high-protein', 'vegetarian', 'light', 'good-sleep']
-  },
-  {
-    id: 'd14', name: 'Egg Dal', hindiName: 'अंडा दाल',
-    category: 'dinner', cookTime: 30, protein: 26, calories: 320,
-    ingredients: ['2 eggs', '1/2 cup toor dal', 'Tomato', 'Onion', 'Spices', 'Oil', 'Coriander'],
-    steps: ['Cook toor dal', 'Make masala with onion tomato', 'Add dal to masala', 'Crack eggs directly into dal', 'Cover and cook 5 minutes', 'Garnish and serve'],
-    seniorTip: 'Unique combination of dal and egg gives 26g protein. Bihar style recipe. Very nutritious.',
-    tags: ['very-high-protein', 'non-veg', 'bihari', 'unique']
-  },
-  {
-    id: 'd15', name: 'Tofu Stir Fry', hindiName: 'टोफू स्टिर फ्राई',
-    category: 'dinner', cookTime: 20, protein: 20, calories: 240,
-    ingredients: ['200g firm tofu', 'Bell peppers', 'Broccoli', 'Soy sauce', 'Ginger garlic', 'Sesame oil', 'Spring onions'],
-    steps: ['Press tofu dry and cube', 'Fry tofu until golden', 'Stir fry vegetables on high heat', 'Add soy sauce and ginger', 'Add tofu back', 'Finish with sesame oil'],
-    seniorTip: 'Tofu is complete protein like meat. Stir frying preserves maximum nutrients. Light and easy to digest.',
-    tags: ['high-protein', 'vegetarian', 'chinese-style', 'light']
-  },
-  {
-    id: 'd16', name: 'Aloo Chole', hindiName: 'आलू छोले',
-    category: 'dinner', cookTime: 35, protein: 16, calories: 380,
-    ingredients: ['1 cup chana', '2 potatoes', 'Onion tomato masala', 'Whole spices', 'Amchur', 'Ghee'],
-    steps: ['Pressure cook chana and potato', 'Make masala', 'Add chana and potato', 'Simmer 15 minutes', 'Add amchur for tanginess', 'Serve with puri or rice'],
-    seniorTip: 'Chana gives sustained energy throughout night. Potato adds carbs for restful sleep.',
-    tags: ['high-protein', 'vegetarian', 'north-indian', 'filling']
-  },
-  {
-    id: 'd17', name: 'Prawn Curry', hindiName: 'झींगा करी',
-    category: 'dinner', cookTime: 30, protein: 28, calories: 260,
-    ingredients: ['300g prawns', 'Coconut milk', 'Onion', 'Tomatoes', 'Ginger garlic', 'Prawn masala', 'Curry leaves', 'Oil'],
-    steps: ['Clean and devein prawns', 'Make masala with onion tomato', 'Add coconut milk', 'Add prawns and cook 8 minutes', 'Add curry leaves', 'Serve with rice'],
-    seniorTip: 'Prawns are very high protein with low calories. Easy to chew — good for seniors with dental issues.',
-    tags: ['very-high-protein', 'non-veg', 'coastal', 'easy-to-chew']
-  },
-  {
-    id: 'd18', name: 'Spinach Dal', hindiName: 'पालक दाल',
-    category: 'dinner', cookTime: 30, protein: 18, calories: 260,
-    ingredients: ['1/2 cup chana dal', '2 cups spinach', 'Tomato', 'Garlic', 'Cumin', 'Ghee', 'Turmeric', 'Lemon'],
-    steps: ['Cook chana dal with turmeric', 'Blanch and puree spinach', 'Mix dal and spinach', 'Make garlic tadka in ghee', 'Add to dal mixture', 'Serve with roti'],
-    seniorTip: 'Iron from spinach + Vitamin C from lemon = maximum iron absorption. Prevents anemia in seniors.',
-    tags: ['high-protein', 'vegetarian', 'iron-rich', 'anti-anemia']
-  },
-  {
-    id: 'd19', name: 'Curd Chicken', hindiName: 'दही चिकन',
-    category: 'dinner', cookTime: 40, protein: 38, calories: 300,
-    ingredients: ['300g chicken', 'Thick curd', 'Onion', 'Garam masala', 'Kewra water', 'Ghee', 'Saffron'],
-    steps: ['Marinate chicken in curd overnight', 'Cook onions until golden', 'Add chicken with marinade', 'Cook on low heat covered', 'Add saffron and kewra', 'Serve with naan or rice'],
-    seniorTip: 'Curd tenderizes chicken making it soft and easy to digest. Very gentle on stomach for seniors.',
-    tags: ['very-high-protein', 'non-veg', 'mughlai', 'easy-digestion']
-  },
-  {
-    id: 'd20', name: 'Warm Milk with Turmeric', hindiName: 'हल्दी वाला दूध',
-    category: 'dinner', cookTime: 5, protein: 8, calories: 150,
-    ingredients: ['1 glass milk', '1 tsp turmeric', '1 tsp honey', 'Pinch of black pepper', 'Cardamom', 'Saffron'],
-    steps: ['Heat milk until hot', 'Add turmeric and pepper', 'Add cardamom and honey', 'Add saffron', 'Stir well', 'Drink hot before bed'],
-    seniorTip: 'Golden milk before bed is best natural sleep remedy. Turmeric reduces inflammation overnight.',
-    tags: ['protein', 'vegetarian', 'anti-inflammatory', 'good-sleep', 'traditional']
-  },
-  {
-    id: 'd21', name: 'Moong Soup', hindiName: 'मूंग सूप',
-    category: 'dinner', cookTime: 25, protein: 12, calories: 180,
-    ingredients: ['1/2 cup whole moong', 'Ginger', 'Tomato', 'Cumin', 'Turmeric', 'Lemon', 'Coriander', 'Black pepper'],
-    steps: ['Cook moong until soft', 'Add ginger and tomato', 'Blend half the soup', 'Mix smooth and chunky', 'Add cumin tadka', 'Squeeze lemon and serve'],
-    seniorTip: 'Light protein soup is ideal before 8pm dinner for seniors. Easy digestion and good sleep.',
-    tags: ['high-protein', 'vegetarian', 'light', 'easy-digestion']
-  },
-  {
-    id: 'd22', name: 'Masala Oats', hindiName: 'मसाला ओट्स',
-    category: 'dinner', cookTime: 15, protein: 12, calories: 250,
-    ingredients: ['1 cup oats', 'Onion', 'Tomato', 'Peas', 'Carrot', 'Cumin', 'Turmeric', 'Salt'],
-    steps: ['Temper cumin in oil', 'Add vegetables and saute', 'Add oats and mix', 'Add water and cook 5 minutes', 'Adjust consistency', 'Serve hot'],
-    seniorTip: 'Savory oats is a light, healthy dinner option. High fiber helps digestion overnight.',
-    tags: ['high-protein', 'vegetarian', 'light', 'fiber-rich', 'quick']
-  },
-  {
-    id: 'd23', name: 'Shrimp Stir Fry', hindiName: 'झींगा भुना',
-    category: 'dinner', cookTime: 15, protein: 30, calories: 200,
-    ingredients: ['250g shrimp', 'Garlic', 'Ginger', 'Soy sauce', 'Lemon', 'Spring onion', 'Sesame oil', 'Pepper'],
-    steps: ['Clean shrimp thoroughly', 'Heat oil and fry garlic ginger', 'Add shrimp and cook 3 minutes', 'Add soy sauce and lemon', 'Finish with sesame oil', 'Garnish with spring onion'],
-    seniorTip: 'Shrimp cooks in minutes and is very high protein. Easy to chew and digest for seniors.',
-    tags: ['very-high-protein', 'non-veg', 'quick', 'easy-to-chew']
-  },
-  {
-    id: 'd24', name: 'Beans and Rice', hindiName: 'राजमा चावल',
-    category: 'dinner', cookTime: 40, protein: 16, calories: 380,
-    ingredients: ['1/2 cup beans', '1 cup brown rice', 'Tomato', 'Onion', 'Garlic', 'Cumin', 'Coriander', 'Lemon'],
-    steps: ['Cook beans in pressure cooker', 'Cook brown rice separately', 'Make simple tomato masala', 'Add beans to masala', 'Serve over brown rice', 'Add lemon and coriander'],
-    seniorTip: 'Beans plus rice gives complete protein. Brown rice lowers blood sugar spike — ideal for diabetics.',
-    tags: ['high-protein', 'vegetarian', 'diabetic-friendly', 'complete-protein']
-  },
-  {
-    id: 'd25', name: 'Milk Paneer Kheer', hindiName: 'पनीर खीर',
-    category: 'dinner', cookTime: 30, protein: 16, calories: 280,
-    ingredients: ['1 cup milk', '100g soft paneer', 'Sugar or jaggery', 'Cardamom', 'Saffron', 'Almonds', 'Pistachios'],
-    steps: ['Heat milk and reduce to half', 'Add crumbled soft paneer', 'Add sugar and cardamom', 'Add saffron and stir', 'Cook 10 minutes', 'Serve warm or cold with nuts'],
-    seniorTip: 'Casein protein in paneer and milk digests slowly overnight — best for muscle preservation while sleeping.',
-    tags: ['high-protein', 'vegetarian', 'dessert', 'muscle-preservation', 'sweet']
-  },
-  // ========== SNACKS (25) ==========
-  {
-    id: 's1', name: 'Boiled Chana Chat', hindiName: 'उबला चना चाट',
-    category: 'snack', cookTime: 10, protein: 15, calories: 180,
-    ingredients: ['1 cup boiled chana', 'Onion chopped', 'Tomato chopped', 'Lemon juice', 'Chaat masala', 'Black salt', 'Coriander', 'Green chilli'],
-    steps: ['Boil chana until soft', 'Mix with chopped vegetables', 'Add lemon juice generously', 'Add chaat masala and black salt', 'Toss well', 'Garnish with coriander'],
-    seniorTip: 'Best afternoon snack. High protein and fiber keeps you full until dinner. Cheapest protein snack.',
-    tags: ['high-protein', 'vegetarian', 'affordable', 'filling']
-  },
-  {
-    id: 's2', name: 'Roasted Peanuts', hindiName: 'भुनी मूंगफली',
-    category: 'snack', cookTime: 10, protein: 10, calories: 160,
-    ingredients: ['50g raw peanuts', 'Salt', 'Chilli powder', 'Chaat masala', 'Lemon juice'],
-    steps: ['Dry roast peanuts in pan', 'Roast until golden and fragrant', 'Sprinkle salt and chilli', 'Add chaat masala', 'Add lemon juice', 'Cool and eat'],
-    seniorTip: 'Handful of peanuts is perfect 4pm snack. Prevents overeating at dinner. Heart healthy fats.',
-    tags: ['high-protein', 'vegetarian', 'affordable', 'heart-healthy']
-  },
-  {
-    id: 's3', name: 'Paneer Tikka Snack', hindiName: 'पनीर टिक्का स्नैक',
-    category: 'snack', cookTime: 20, protein: 20, calories: 240,
-    ingredients: ['150g paneer cubes', 'Bell peppers', 'Onion', 'Curd', 'Tikka masala', 'Lemon', 'Chaat masala'],
-    steps: ['Marinate paneer in spiced curd', 'Thread on toothpicks with vegetables', 'Grill on tawa', 'Cook until golden marks', 'Sprinkle chaat masala', 'Serve with mint chutney'],
-    seniorTip: 'Paneer tikka as snack provides protein hit between meals. Prevents muscle loss throughout day.',
-    tags: ['high-protein', 'vegetarian', 'restaurant-style', 'muscle-preservation']
-  },
-  {
-    id: 's4', name: 'Greek Yogurt with Berries', hindiName: 'दही फल',
-    category: 'snack', cookTime: 5, protein: 12, calories: 150,
-    ingredients: ['150g hung curd', 'Seasonal fruits', '1 tbsp honey', 'Mixed seeds', 'Granola optional'],
-    steps: ['Take hung curd in bowl', 'Top with seasonal fruits', 'Add honey', 'Sprinkle seeds', 'Add granola for crunch', 'Serve immediately'],
-    seniorTip: 'Perfect 4pm snack. Curd protein keeps energy stable. Seeds provide omega-3 and minerals.',
-    tags: ['high-protein', 'vegetarian', 'quick', 'energy-boost']
-  },
-  {
-    id: 's5', name: 'Egg Salad', hindiName: 'अंडा सलाद',
-    category: 'snack', cookTime: 15, protein: 18, calories: 200,
-    ingredients: ['3 boiled eggs', 'Cucumber', 'Tomato', 'Onion', 'Mustard', 'Black pepper', 'Salt', 'Coriander'],
-    steps: ['Boil and peel eggs', 'Mash or slice eggs', 'Mix with chopped vegetables', 'Add mustard and pepper', 'Mix well', 'Eat with whole wheat crackers'],
-    seniorTip: 'High protein snack that keeps hunger away for 3 hours. Eggs contain all 9 essential amino acids.',
-    tags: ['high-protein', 'non-veg', 'filling', 'complete-protein']
-  },
-  {
-    id: 's6', name: 'Soya Milk', hindiName: 'सोया दूध',
-    category: 'snack', cookTime: 5, protein: 8, calories: 120,
-    ingredients: ['200ml soya milk', '1 tsp honey', 'Cardamom', 'Pinch of turmeric', 'Warm or cold'],
-    steps: ['Heat soya milk or serve cold', 'Add honey and cardamom', 'Add turmeric if having warm', 'Stir well', 'Drink slowly', 'Best afternoon snack'],
-    seniorTip: 'Soya milk is complete plant protein. Reduces cholesterol. Excellent for diabetics and heart patients.',
-    tags: ['high-protein', 'vegetarian', 'heart-healthy', 'diabetic-friendly']
-  },
-  {
-    id: 's7', name: 'Sprouts Chaat', hindiName: 'अंकुरित चाट',
+  // ========== WEIGHT LOSS (25) ==========
+  {
+    id: 'w1', name: 'Cucumber Moong Salad', hindiName: 'खीरा मूंग सलाद',
+    category: 'breakfast', cookTime: 10, protein: 14, calories: 130,
+    healthTag: 'weight-loss',
+    ingredients: ['1 cup sprouted moong', '1 cucumber', '1 tomato', '1 lemon', 'Black salt', 'Cumin powder', 'Coriander'],
+    steps: ['Steam sprouts 5 mins', 'Chop cucumber and tomato', 'Mix all together', 'Add lemon and spices', 'Toss well', 'Serve immediately'],
+    seniorTip: 'Only 130 calories with 14g protein. Perfect weight loss breakfast. Very filling due to high fiber.',
+    tags: ['weight-loss', 'low-calorie', 'high-protein', 'no-cook']
+  },
+  {
+    id: 'w2', name: 'Egg White Vegetable Omelette', hindiName: 'अंडे का सफेद ऑमलेट',
+    category: 'breakfast', cookTime: 10, protein: 20, calories: 150,
+    healthTag: 'weight-loss',
+    ingredients: ['4 egg whites', 'Spinach', 'Mushrooms', 'Bell peppers', 'Onion', 'Salt', 'Pepper', 'Olive oil spray'],
+    steps: ['Whisk egg whites', 'Saute vegetables in spray oil', 'Pour egg whites over vegetables', 'Cook both sides', 'Fold and serve', 'Season with pepper'],
+    seniorTip: 'Zero fat, pure protein. Egg whites are best weight loss food. Adding vegetables fills you up.',
+    tags: ['weight-loss', 'zero-fat', 'high-protein', 'filling']
+  },
+  {
+    id: 'w3', name: 'Green Smoothie', hindiName: 'हरी स्मूदी',
+    category: 'breakfast', cookTime: 5, protein: 10, calories: 140,
+    healthTag: 'weight-loss',
+    ingredients: ['1 cup spinach', '1 green apple', '1 cucumber', '1 inch ginger', '1 lemon', '1 tbsp chia seeds', 'Water'],
+    steps: ['Add all ingredients to blender', 'Blend until smooth', 'Add water for consistency', 'Add chia seeds and blend', 'Pour in glass', 'Drink immediately'],
+    seniorTip: 'Alkaline green smoothie reduces inflammation. Ginger boosts metabolism for weight loss.',
+    tags: ['weight-loss', 'alkaline', 'metabolism-boost', 'detox']
+  },
+  {
+    id: 'w4', name: 'Masala Oats Porridge', hindiName: 'मसाला ओट्स',
+    category: 'breakfast', cookTime: 10, protein: 12, calories: 200,
+    healthTag: 'weight-loss',
+    ingredients: ['1 cup rolled oats', 'Onion', 'Tomato', 'Green peas', 'Carrot', 'Cumin', 'Turmeric', 'Salt'],
+    steps: ['Roast oats lightly', 'Saute vegetables', 'Add oats to vegetables', 'Add water and cook', 'Stir until thick', 'Serve hot'],
+    seniorTip: 'Oats beta-glucan reduces cholesterol and hunger. Keeps you full 4+ hours. Perfect weight loss food.',
+    tags: ['weight-loss', 'low-calorie', 'filling', 'cholesterol-friendly']
+  },
+  {
+    id: 'w5', name: 'Watermelon Mint Juice', hindiName: 'तरबूज पुदीना रस',
+    category: 'snack', cookTime: 5, protein: 2, calories: 60,
+    healthTag: 'weight-loss',
+    ingredients: ['2 cups watermelon', 'Fresh mint', '1 lemon', 'Black salt', 'Roasted cumin', 'Ice cubes'],
+    steps: ['Blend watermelon', 'Add mint leaves', 'Add lemon and black salt', 'Add cumin powder', 'Blend with ice', 'Serve chilled'],
+    seniorTip: 'Only 60 calories. Watermelon is 92% water — best hydration for weight loss in summers.',
+    tags: ['weight-loss', 'very-low-calorie', 'hydrating', 'summer-drink']
+  },
+  {
+    id: 'w6', name: 'Moong Dal Soup', hindiName: 'मूंग दाल सूप',
+    category: 'lunch', cookTime: 25, protein: 14, calories: 160,
+    healthTag: 'weight-loss',
+    ingredients: ['1 cup moong dal', 'Spinach', 'Tomato', 'Garlic', 'Ginger', 'Lemon', 'Black pepper', 'Cumin'],
+    steps: ['Cook dal until mushy', 'Add spinach and cook', 'Blend until smooth', 'Add garlic temper', 'Add lemon and pepper', 'Serve hot'],
+    seniorTip: 'This soup is filling but only 160 calories. Replace one meal with this soup for fast weight loss.',
+    tags: ['weight-loss', 'low-calorie', 'filling', 'meal-replacement']
+  },
+  {
+    id: 'w7', name: 'Grilled Fish with Salad', hindiName: 'ग्रिल्ड मछली सलाद',
+    category: 'lunch', cookTime: 25, protein: 32, calories: 280,
+    healthTag: 'weight-loss',
+    ingredients: ['250g fish fillet', 'Mixed greens', 'Cucumber', 'Tomato', 'Lemon dressing', 'Olive oil', 'Spices'],
+    steps: ['Marinate fish with spices and lemon', 'Grill on high heat', 'Prepare salad with dressing', 'Place fish on salad bed', 'Add extra lemon squeeze', 'Serve immediately'],
+    seniorTip: 'Highest protein to calorie ratio. Fish fills you up without fat. Best weight loss lunch.',
+    tags: ['weight-loss', 'high-protein', 'low-calorie', 'omega-3']
+  },
+  {
+    id: 'w8', name: 'Vegetable Clear Soup', hindiName: 'सब्जी का साफ सूप',
+    category: 'dinner', cookTime: 20, protein: 8, calories: 80,
+    healthTag: 'weight-loss',
+    ingredients: ['Broccoli', 'Carrot', 'Beans', 'Mushrooms', 'Garlic', 'Ginger', 'Pepper', 'Salt'],
+    steps: ['Boil water with garlic and ginger', 'Add all vegetables', 'Cook 10 minutes', 'Season with pepper and salt', 'Do not blend — keep chunky', 'Serve very hot'],
+    seniorTip: 'Only 80 calories for dinner! Have before main meal to eat 20% less. Best weight loss strategy.',
+    tags: ['weight-loss', 'very-low-calorie', 'pre-meal', 'appetite-control']
+  },
+  {
+    id: 'w9', name: 'Tandoori Chicken Salad', hindiName: 'तंदूरी चिकन सलाद',
+    category: 'lunch', cookTime: 35, protein: 36, calories: 280,
+    healthTag: 'weight-loss',
+    ingredients: ['200g chicken breast', 'Tandoori masala', 'Curd', 'Mixed greens', 'Onion rings', 'Lemon', 'Mint chutney'],
+    steps: ['Marinate chicken in spiced curd', 'Grill until charred', 'Slice chicken thin', 'Place on bed of greens', 'Add onion rings', 'Drizzle mint chutney'],
+    seniorTip: 'Tandoori chicken is zero oil grilled protein. This salad replaces a full meal at only 280 calories.',
+    tags: ['weight-loss', 'high-protein', 'grilled', 'zero-oil']
+  },
+  {
+    id: 'w10', name: 'Lauki Raita', hindiName: 'लौकी रायता',
+    category: 'dinner', cookTime: 15, protein: 10, calories: 120,
+    healthTag: 'weight-loss',
+    ingredients: ['1 cup lauki grated', '200g curd', 'Roasted cumin', 'Black salt', 'Mint', 'Green chilli', 'Coriander'],
+    steps: ['Cook lauki until soft', 'Cool completely', 'Whisk curd smooth', 'Mix lauki into curd', 'Add spices', 'Garnish with mint'],
+    seniorTip: 'Lauki is 96% water. This raita is extremely filling with very few calories. Perfect light dinner.',
+    tags: ['weight-loss', 'very-low-calorie', 'filling', 'probiotic']
+  },
+  {
+    id: 'w11', name: 'Steamed Idli with Sambar', hindiName: 'उबला इडली सांभर',
+    category: 'breakfast', cookTime: 30, protein: 14, calories: 250,
+    healthTag: 'weight-loss',
+    ingredients: ['4 small idlis', 'Thin sambar', 'Coconut chutney', 'Drumstick in sambar', 'Toor dal', 'Vegetables'],
+    steps: ['Steam idlis without oil', 'Make thin sambar', 'Avoid adding sugar', 'Serve idli in sambar bowl', 'Add chutney sparingly', 'Eat slowly and mindfully'],
+    seniorTip: 'Fermented idli has low glycemic index. Steamed not fried. Sambar adds protein. Perfect south Indian diet.',
+    tags: ['weight-loss', 'low-gi', 'probiotic', 'south-indian']
+  },
+  {
+    id: 'w12', name: 'Palak Paneer Light', hindiName: 'हल्का पालक पनीर',
+    category: 'lunch', cookTime: 25, protein: 20, calories: 240,
+    healthTag: 'weight-loss',
+    ingredients: ['150g low-fat paneer', '3 cups spinach', 'Tomatoes', 'Onion', 'Spices', 'Minimal oil', 'No cream'],
+    steps: ['Blanch and puree spinach', 'Saute onion and tomato in minimal oil', 'Add spinach puree', 'Add low-fat paneer', 'Simmer without cream', 'Serve with roti'],
+    seniorTip: 'Skip cream to save 100 calories. Low-fat paneer has same protein. This version is 40% fewer calories.',
+    tags: ['weight-loss', 'low-fat', 'high-protein', 'modified-recipe']
+  },
+  {
+    id: 'w13', name: 'Bitter Gourd Sabzi', hindiName: 'करेला सब्जी',
+    category: 'lunch', cookTime: 20, protein: 6, calories: 100,
+    healthTag: 'weight-loss',
+    ingredients: ['2 bitter gourds', 'Onion', 'Tomato', 'Turmeric', 'Cumin', 'Minimal oil', 'Salt', 'Lemon'],
+    steps: ['Slice and salt karela', 'Rest 15 minutes to reduce bitterness', 'Squeeze and wash', 'Saute in minimal oil', 'Add onion and spices', 'Cook until soft'],
+    seniorTip: 'Karela controls blood sugar and aids weight loss. Reduces belly fat specifically. Bitter taste gets easier.',
+    tags: ['weight-loss', 'blood-sugar', 'belly-fat', 'medicinal']
+  },
+  {
+    id: 'w14', name: 'Protein Chaas', hindiName: 'प्रोटीन छाछ',
+    category: 'snack', cookTime: 5, protein: 10, calories: 90,
+    healthTag: 'weight-loss',
+    ingredients: ['200ml buttermilk', '1 tbsp sattu', 'Roasted cumin', 'Black salt', 'Ginger', 'Mint leaves', 'Ice'],
+    steps: ['Blend buttermilk with sattu', 'Add cumin and black salt', 'Add ginger and mint', 'Blend with ice', 'Pour and serve', 'Drink between meals'],
+    seniorTip: 'Only 90 calories with 10g protein. Sattu in chaas is best Indian weight loss drink. Drink daily.',
+    tags: ['weight-loss', 'low-calorie', 'protein-drink', 'traditional']
+  },
+  {
+    id: 'w15', name: 'Mushroom Egg Scramble', hindiName: 'मशरूम अंडा भुर्जी',
+    category: 'breakfast', cookTime: 15, protein: 22, calories: 180,
+    healthTag: 'weight-loss',
+    ingredients: ['3 eggs', '1 cup mushrooms', 'Onion', 'Garlic', 'Pepper', 'Salt', 'Minimal oil', 'Parsley'],
+    steps: ['Saute mushrooms until browned', 'Add onion and garlic', 'Beat eggs and add', 'Scramble on medium heat', 'Season with pepper', 'Serve hot'],
+    seniorTip: 'Mushrooms are extremely low calorie but filling. This breakfast gives 22g protein at only 180 calories.',
+    tags: ['weight-loss', 'low-calorie', 'high-protein', 'filling']
+  },
+  {
+    id: 'w16', name: 'Ragi Dosa', hindiName: 'रागी डोसा',
+    category: 'breakfast', cookTime: 20, protein: 10, calories: 180,
+    healthTag: 'weight-loss',
+    ingredients: ['1 cup ragi flour', '1/4 cup rice flour', 'Onion', 'Green chilli', 'Cumin', 'Salt', 'Water'],
+    steps: ['Mix flours with water to thin batter', 'Add onion chilli and spices', 'Heat tawa until hot', 'Pour batter and spread thin', 'Cook until crispy', 'Serve with sambar'],
+    seniorTip: 'Ragi has high calcium and fiber. Very low glycemic index. Keeps you full longer than wheat. Best for weight loss.',
+    tags: ['weight-loss', 'high-calcium', 'low-gi', 'fiber-rich']
+  },
+  {
+    id: 'w17', name: 'Curd with Flaxseeds', hindiName: 'अलसी दही',
+    category: 'snack', cookTime: 5, protein: 12, calories: 130,
+    healthTag: 'weight-loss',
+    ingredients: ['200g low-fat curd', '1 tbsp flaxseeds', '1 tsp honey', 'Seasonal fruit', 'Cinnamon powder'],
+    steps: ['Take curd in bowl', 'Add flaxseeds', 'Add honey and cinnamon', 'Add fruit pieces', 'Mix gently', 'Eat immediately'],
+    seniorTip: 'Flaxseeds omega-3 reduces inflammation. Cinnamon controls appetite. Best afternoon snack for weight loss.',
+    tags: ['weight-loss', 'omega-3', 'appetite-control', 'anti-inflammatory']
+  },
+  {
+    id: 'w18', name: 'Zucchini Dal Soup', hindiName: 'तोरई दाल सूप',
+    category: 'dinner', cookTime: 25, protein: 12, calories: 150,
+    healthTag: 'weight-loss',
+    ingredients: ['1/2 cup moong dal', '1 zucchini or turai', 'Tomato', 'Garlic', 'Ginger', 'Cumin', 'Lemon', 'Coriander'],
+    steps: ['Cook dal with zucchini', 'Blend half the soup', 'Add garlic temper', 'Add lemon and spices', 'Serve hot', 'Garnish with coriander'],
+    seniorTip: 'Zucchini adds bulk with almost zero calories. This soup fills stomach completely for only 150 calories.',
+    tags: ['weight-loss', 'low-calorie', 'volumetric-eating', 'filling']
+  },
+  {
+    id: 'w19', name: 'Chicken Lettuce Wrap', hindiName: 'चिकन लेटस रैप',
+    category: 'lunch', cookTime: 20, protein: 30, calories: 220,
+    healthTag: 'weight-loss',
+    ingredients: ['200g minced chicken', 'Lettuce leaves', 'Garlic', 'Ginger', 'Soy sauce', 'Sesame oil', 'Spring onion', 'Chilli'],
+    steps: ['Stir fry minced chicken', 'Add garlic and ginger', 'Season with soy sauce', 'Cook until dry', 'Place in lettuce cups', 'Top with spring onion'],
+    seniorTip: 'No bread no rice! Lettuce replaces roti for weight loss. 30g protein at only 220 calories.',
+    tags: ['weight-loss', 'no-carb', 'high-protein', 'innovative']
+  },
+  {
+    id: 'w20', name: 'Apple Cinnamon Oats', hindiName: 'सेब दालचीनी ओट्स',
+    category: 'breakfast', cookTime: 10, protein: 10, calories: 220,
+    healthTag: 'weight-loss',
+    ingredients: ['1 cup oats', '1 apple chopped', '1 tsp cinnamon', '1 tbsp honey', 'Almond milk', '5 almonds', 'Chia seeds'],
+    steps: ['Cook oats in almond milk', 'Add chopped apple', 'Add cinnamon and honey', 'Stir until thick', 'Top with almonds', 'Add chia seeds and serve'],
+    seniorTip: 'Cinnamon reduces blood sugar spikes by 29%. Apple pectin fiber suppresses appetite naturally.',
+    tags: ['weight-loss', 'blood-sugar', 'appetite-control', 'fiber-rich']
+  },
+  {
+    id: 'w21', name: 'Boiled Egg Salad', hindiName: 'उबला अंडा सलाद',
+    category: 'snack', cookTime: 15, protein: 18, calories: 170,
+    healthTag: 'weight-loss',
+    ingredients: ['3 eggs boiled', 'Lettuce', 'Cucumber', 'Cherry tomatoes', 'Lemon dressing', 'Black pepper', 'Salt'],
+    steps: ['Boil and peel eggs', 'Slice in half', 'Arrange on lettuce', 'Add vegetables around', 'Drizzle lemon dressing', 'Season with pepper'],
+    seniorTip: 'Eating boiled eggs prevents overeating at next meal by up to 36%. Best weight management snack.',
+    tags: ['weight-loss', 'appetite-control', 'high-protein', 'low-calorie']
+  },
+  {
+    id: 'w22', name: 'Cauliflower Rice', hindiName: 'फूलगोभी चावल',
+    category: 'lunch', cookTime: 15, protein: 8, calories: 120,
+    healthTag: 'weight-loss',
+    ingredients: ['1 cauliflower', 'Onion', 'Garlic', 'Peas', 'Carrot', 'Soy sauce', 'Pepper', 'Sesame oil'],
+    steps: ['Grate cauliflower into rice-size pieces', 'Saute onion and garlic', 'Add vegetables', 'Add cauliflower rice', 'Season with soy sauce', 'Cook 5 minutes'],
+    seniorTip: 'Cauliflower rice has 80% fewer calories than regular rice. Same taste, massive calorie saving.',
+    tags: ['weight-loss', 'very-low-calorie', 'rice-substitute', 'innovative']
+  },
+  {
+    id: 'w23', name: 'Tomato Egg Drop Soup', hindiName: 'टमाटर अंडा सूप',
+    category: 'dinner', cookTime: 15, protein: 14, calories: 130,
+    healthTag: 'weight-loss',
+    ingredients: ['3 tomatoes', '2 eggs', 'Garlic', 'Ginger', 'Cornflour', 'Black pepper', 'Vinegar', 'Salt'],
+    steps: ['Make tomato broth with garlic', 'Thicken with cornflour', 'Beat eggs', 'Slowly drizzle eggs into hot soup', 'Add vinegar and pepper', 'Serve immediately'],
+    seniorTip: 'Chinese-style weight loss soup. Eggs drop gives protein. Tomato lycopene is anti-cancer for seniors.',
+    tags: ['weight-loss', 'low-calorie', 'anti-cancer', 'quick-dinner']
+  },
+  {
+    id: 'w24', name: 'Turai Sabzi', hindiName: 'तोरई सब्जी',
+    category: 'lunch', cookTime: 15, protein: 4, calories: 80,
+    healthTag: 'weight-loss',
+    ingredients: ['2 turai (ridge gourd)', 'Onion', 'Tomato', 'Mustard seeds', 'Turmeric', 'Salt', 'Minimal oil'],
+    steps: ['Peel and slice turai', 'Temper mustard seeds', 'Add onion and tomato', 'Add turai and turmeric', 'Cook covered until soft', 'Serve with roti'],
+    seniorTip: 'Turai is 95% water and extremely low calorie. Excellent for kidney health and weight loss.',
+    tags: ['weight-loss', 'very-low-calorie', 'kidney-friendly', 'traditional']
+  },
+  {
+    id: 'w25', name: 'Protein Khichdi', hindiName: 'प्रोटीन खिचड़ी',
+    category: 'dinner', cookTime: 25, protein: 18, calories: 280,
+    healthTag: 'weight-loss',
+    ingredients: ['1/4 cup rice', '3/4 cup mixed dal', 'Vegetables', 'Turmeric', 'Ghee minimal', 'Cumin', 'Asafoetida'],
+    steps: ['Use less rice more dal ratio', 'Pressure cook together', 'Add extra vegetables', 'Make ghee temper', 'Keep consistency thin', 'Serve with pickle'],
+    seniorTip: 'More dal less rice increases protein reduces carbs. This ratio gives 18g protein for weight loss.',
+    tags: ['weight-loss', 'high-protein', 'low-carb', 'easy-digestion']
+  },
+  // ========== HEART HEALTH (25) ==========
+  {
+    id: 'h1', name: 'Oats with Flaxseed', hindiName: 'अलसी ओट्स',
+    category: 'breakfast', cookTime: 10, protein: 12, calories: 280,
+    healthTag: 'heart-health',
+    ingredients: ['1 cup oats', '2 tbsp ground flaxseed', 'Almond milk', 'Blueberries', '1 tsp honey', 'Cinnamon', 'Walnuts'],
+    steps: ['Cook oats in almond milk', 'Add flaxseed powder', 'Stir well and cook 5 minutes', 'Add honey and cinnamon', 'Top with blueberries', 'Add crushed walnuts'],
+    seniorTip: 'Oats + flaxseed + walnuts = triple heart protection. Reduces LDL cholesterol by up to 15%. Eat daily.',
+    tags: ['heart-health', 'cholesterol-reducing', 'omega-3', 'daily-essential']
+  },
+  {
+    id: 'h2', name: 'Garlic Tomato Soup', hindiName: 'लहसुन टमाटर सूप',
+    category: 'dinner', cookTime: 20, protein: 6, calories: 100,
+    healthTag: 'heart-health',
+    ingredients: ['5 tomatoes', '10 garlic cloves', 'Onion', 'Olive oil', 'Basil or tulsi', 'Black pepper', 'Salt'],
+    steps: ['Roast garlic and tomatoes', 'Blend until smooth', 'Cook with olive oil', 'Add basil and pepper', 'Simmer 10 minutes', 'Serve hot'],
+    seniorTip: 'Garlic reduces blood pressure and LDL cholesterol. Tomato lycopene protects arteries. Daily heart medicine.',
+    tags: ['heart-health', 'blood-pressure', 'cholesterol', 'anti-inflammatory']
+  },
+  {
+    id: 'h3', name: 'Walnut Banana Smoothie', hindiName: 'अखरोट केला स्मूदी',
+    category: 'breakfast', cookTime: 5, protein: 12, calories: 280,
+    healthTag: 'heart-health',
+    ingredients: ['8 walnuts', '1 banana', '1 cup low-fat milk', '1 tbsp honey', 'Cinnamon', 'Cardamom'],
+    steps: ['Soak walnuts 2 hours', 'Blend all ingredients', 'Add cinnamon and cardamom', 'Blend until smooth', 'Pour in glass', 'Drink immediately'],
+    seniorTip: 'Walnuts are number 1 heart food. ALA omega-3 reduces heart attack risk by 30%. Eat 8 walnuts daily.',
+    tags: ['heart-health', 'omega-3', 'blood-pressure', 'artery-protection']
+  },
+  {
+    id: 'h4', name: 'Palak Dal', hindiName: 'पालक दाल',
+    category: 'lunch', cookTime: 30, protein: 18, calories: 260,
+    healthTag: 'heart-health',
+    ingredients: ['1 cup toor dal', '2 cups spinach', 'Garlic', 'Tomato', 'Minimal ghee', 'Turmeric', 'Lemon', 'Cumin'],
+    steps: ['Cook dal with turmeric', 'Blanch spinach', 'Add spinach to dal', 'Make garlic temper', 'Add tomato and cook', 'Finish with lemon'],
+    seniorTip: 'Spinach folate prevents homocysteine buildup that damages arteries. Dal fiber removes cholesterol.',
+    tags: ['heart-health', 'folate-rich', 'cholesterol-reducing', 'iron-rich']
+  },
+  {
+    id: 'h5', name: 'Baked Fish with Herbs', hindiName: 'जड़ी बूटी पकी मछली',
+    category: 'lunch', cookTime: 30, protein: 34, calories: 240,
+    healthTag: 'heart-health',
+    ingredients: ['300g fish', 'Olive oil', 'Garlic', 'Lemon', 'Turmeric', 'Black pepper', 'Coriander', 'Ajwain'],
+    steps: ['Marinate fish with spices', 'Drizzle olive oil', 'Bake at 180°C for 20 minutes', 'Check for doneness', 'Squeeze lemon', 'Serve with salad'],
+    seniorTip: 'Omega-3 in fish reduces triglycerides by 25-30%. Baking not frying keeps it heart-healthy.',
+    tags: ['heart-health', 'omega-3', 'triglycerides', 'baked', 'zero-bad-fat']
+  },
+  {
+    id: 'h6', name: 'Amla Juice', hindiName: 'आंवला रस',
+    category: 'snack', cookTime: 5, protein: 1, calories: 30,
+    healthTag: 'heart-health',
+    ingredients: ['3 amla (Indian gooseberry)', 'Water', 'Honey optional', 'Ginger', 'Black salt'],
+    steps: ['Wash and deseed amla', 'Blend with water', 'Strain through cloth', 'Add ginger juice', 'Add honey and black salt', 'Drink on empty stomach'],
+    seniorTip: 'Amla is richest Vitamin C source. Reduces cholesterol and blood pressure naturally. Drink every morning.',
+    tags: ['heart-health', 'vitamin-c', 'cholesterol', 'blood-pressure', 'daily-ritual']
+  },
+  {
+    id: 'h7', name: 'Bajra Roti with Methi', hindiName: 'मेथी बाजरा रोटी',
+    category: 'lunch', cookTime: 20, protein: 10, calories: 220,
+    healthTag: 'heart-health',
+    ingredients: ['1 cup bajra flour', '1/2 cup methi leaves', 'Garlic', 'Turmeric', 'Oil', 'Salt', 'Water'],
+    steps: ['Mix bajra flour with methi', 'Add garlic and turmeric', 'Knead firm dough', 'Make thick rotis', 'Cook on tawa both sides', 'Serve with dal or curd'],
+    seniorTip: 'Bajra reduces bad cholesterol. Methi controls blood sugar and cholesterol together. Traditional Rajasthani heart food.',
+    tags: ['heart-health', 'cholesterol', 'blood-sugar', 'traditional', 'rajasthani']
+  },
+  {
+    id: 'h8', name: 'Olive Oil Stir Fry Vegetables', hindiName: 'ऑलिव ऑयल सब्जी',
+    category: 'dinner', cookTime: 15, protein: 8, calories: 180,
+    healthTag: 'heart-health',
+    ingredients: ['Broccoli', 'Bell peppers', 'Beans', 'Garlic', 'Olive oil', 'Black pepper', 'Lemon', 'Salt'],
+    steps: ['Heat olive oil on medium', 'Add garlic and saute', 'Add harder vegetables first', 'Add bell peppers and beans', 'Season with pepper and salt', 'Finish with lemon'],
+    seniorTip: 'Olive oil monounsaturated fat raises good HDL cholesterol. Broccoli sulforaphane protects heart arteries.',
+    tags: ['heart-health', 'hdl-boosting', 'anti-inflammatory', 'mediterranean']
+  },
+  {
+    id: 'h9', name: 'Pomegranate Raita', hindiName: 'अनार रायता',
+    category: 'snack', cookTime: 5, protein: 10, calories: 140,
+    healthTag: 'heart-health',
+    ingredients: ['200g curd', '1/2 cup pomegranate seeds', 'Roasted cumin', 'Black salt', 'Mint', 'Honey'],
+    steps: ['Whisk curd smooth', 'Add pomegranate seeds', 'Add cumin and black salt', 'Add honey', 'Garnish with mint', 'Serve chilled'],
+    seniorTip: 'Pomegranate reduces arterial plaque and lowers blood pressure. Curd probiotics reduce inflammation.',
+    tags: ['heart-health', 'arterial-plaque', 'blood-pressure', 'antioxidant']
+  },
+  {
+    id: 'h10', name: 'Almond Milk Chai', hindiName: 'बादाम दूध चाय',
+    category: 'breakfast', cookTime: 5, protein: 4, calories: 80,
+    healthTag: 'heart-health',
+    ingredients: ['1 cup almond milk', 'Green tea leaves', 'Ginger', 'Cinnamon', 'Cardamom', 'Honey'],
+    steps: ['Brew green tea in water', 'Add almond milk', 'Add ginger and spices', 'Simmer 2 minutes', 'Add honey', 'Strain and serve'],
+    seniorTip: 'Green tea catechins reduce LDL cholesterol. Replace morning chai with this for heart health.',
+    tags: ['heart-health', 'green-tea', 'cholesterol', 'antioxidant', 'morning-ritual']
+  },
+  {
+    id: 'h11', name: 'Toor Dal Soup', hindiName: 'तोर दाल सूप',
+    category: 'dinner', cookTime: 25, protein: 14, calories: 200,
+    healthTag: 'heart-health',
+    ingredients: ['1 cup toor dal', 'Tomato', 'Garlic', 'Turmeric', 'Cumin seeds', 'Minimal ghee', 'Lemon', 'Coriander'],
+    steps: ['Pressure cook toor dal', 'Blend smooth', 'Add water for soup consistency', 'Make ghee and cumin temper', 'Add tomato and cook', 'Serve with lemon'],
+    seniorTip: 'Dal soluble fiber binds to cholesterol and removes it from body. Eat dal soup daily for heart protection.',
+    tags: ['heart-health', 'cholesterol-binding', 'soluble-fiber', 'daily-essential']
+  },
+  {
+    id: 'h12', name: 'Brown Rice Khichdi', hindiName: 'ब्राउन राइस खिचड़ी',
+    category: 'lunch', cookTime: 35, protein: 16, calories: 340,
+    healthTag: 'heart-health',
+    ingredients: ['1/2 cup brown rice', '1/2 cup moong dal', 'Vegetables', 'Turmeric', 'Ghee', 'Cumin', 'Asafoetida'],
+    steps: ['Soak brown rice 30 minutes', 'Cook with dal and vegetables', 'Add turmeric and spices', 'Make ghee temper', 'Mix and adjust consistency', 'Serve with pickle'],
+    seniorTip: 'Brown rice has more fiber than white. Lignans in brown rice reduce heart disease risk. Complete meal.',
+    tags: ['heart-health', 'brown-rice', 'fiber-rich', 'complete-meal']
+  },
+  {
+    id: 'h13', name: 'Avocado Toast', hindiName: 'एवोकाडो टोस्ट',
+    category: 'breakfast', cookTime: 5, protein: 8, calories: 220,
+    healthTag: 'heart-health',
+    ingredients: ['1 avocado', '2 whole wheat bread slices', 'Lemon', 'Black pepper', 'Red chilli flakes', 'Salt', 'Pomegranate seeds'],
+    steps: ['Toast bread until golden', 'Mash avocado with lemon', 'Season with pepper and salt', 'Spread on toast', 'Sprinkle chilli flakes', 'Top with pomegranate'],
+    seniorTip: 'Avocado monounsaturated fat raises HDL by 11%. Available in India now at Big Bazaar. Eat 3x per week.',
+    tags: ['heart-health', 'hdl-boosting', 'monounsaturated-fat', 'modern-indian']
+  },
+  {
+    id: 'h14', name: 'Mixed Sprouts Salad', hindiName: 'मिश्रित अंकुरित सलाद',
     category: 'snack', cookTime: 10, protein: 14, calories: 160,
-    ingredients: ['1 cup mixed sprouts', 'Pomegranate', 'Cucumber', 'Tomato', 'Lemon', 'Chaat masala', 'Black salt', 'Coriander'],
-    steps: ['Steam sprouts lightly', 'Mix with all vegetables', 'Add pomegranate seeds', 'Add lemon and spices', 'Toss well', 'Serve immediately'],
-    seniorTip: 'Sprouts are living food — highest nutrients. Pomegranate adds antioxidants. Perfect senior snack.',
-    tags: ['high-protein', 'vegetarian', 'antioxidant', 'living-food']
+    healthTag: 'heart-health',
+    ingredients: ['Mixed sprouts', 'Onion', 'Tomato', 'Cucumber', 'Pomegranate', 'Lemon', 'Flaxseed', 'Black salt'],
+    steps: ['Steam sprouts lightly', 'Mix with vegetables', 'Add pomegranate seeds', 'Add flaxseed', 'Drizzle lemon', 'Toss with black salt'],
+    seniorTip: 'Sprouts contain coumestans that reduce heart disease. Flaxseed ALA reduces inflammation. Best heart snack.',
+    tags: ['heart-health', 'anti-inflammatory', 'omega-3', 'antioxidant']
   },
   {
-    id: 's8', name: 'Peanut Butter Toast', hindiName: 'मूंगफली टोस्ट',
-    category: 'snack', cookTime: 5, protein: 12, calories: 220,
-    ingredients: ['2 whole wheat bread', '2 tbsp natural peanut butter', '1 banana', '1 tsp honey', 'Chia seeds'],
-    steps: ['Toast whole wheat bread', 'Spread peanut butter', 'Add banana slices', 'Drizzle honey', 'Sprinkle chia seeds', 'Eat immediately'],
-    seniorTip: 'Peanut butter on whole wheat is balanced carb-protein snack. Banana adds potassium for heart health.',
-    tags: ['high-protein', 'vegetarian', 'quick', 'heart-healthy']
+    id: 'h15', name: 'Beetroot Juice', hindiName: 'चुकंदर रस',
+    category: 'snack', cookTime: 5, protein: 2, calories: 60,
+    healthTag: 'heart-health',
+    ingredients: ['2 beetroots', '1 apple', '1 carrot', '1 inch ginger', 'Lemon', 'Black salt'],
+    steps: ['Wash and chop vegetables', 'Blend or juice all', 'Add ginger juice', 'Add lemon and black salt', 'Strain if preferred', 'Drink immediately'],
+    seniorTip: 'Beetroot nitrates reduce blood pressure by 4-5 points within hours. Drink daily for hypertension.',
+    tags: ['heart-health', 'blood-pressure', 'nitrates', 'hypertension', 'daily-ritual']
   },
   {
-    id: 's9', name: 'Roasted Chickpeas', hindiName: 'भुना चना',
-    category: 'snack', cookTime: 30, protein: 12, calories: 150,
-    ingredients: ['1 cup kabuli chana', 'Olive oil', 'Cumin powder', 'Chilli powder', 'Salt', 'Amchur'],
-    steps: ['Drain and dry chickpeas', 'Toss with oil and spices', 'Spread on baking tray', 'Bake at 200°C for 25 minutes', 'Cool until crispy', 'Store in airtight container'],
-    seniorTip: 'Crispy roasted chickpeas are better than chips. High protein healthy snack. Make in bulk.',
-    tags: ['high-protein', 'vegetarian', 'crunchy', 'meal-prep']
+    id: 'h16', name: 'Soya Milk Porridge', hindiName: 'सोया दूध दलिया',
+    category: 'breakfast', cookTime: 15, protein: 16, calories: 280,
+    healthTag: 'heart-health',
+    ingredients: ['1 cup oats or dalia', '300ml soya milk', 'Banana', 'Honey', 'Cinnamon', 'Mixed nuts', 'Seeds'],
+    steps: ['Heat soya milk', 'Add oats and cook', 'Stir continuously', 'Add honey and cinnamon', 'Top with banana', 'Add nuts and seeds'],
+    seniorTip: 'Soya isoflavones reduce cholesterol by 5-10%. Oats beta-glucan adds another 10% reduction. Powerful combination.',
+    tags: ['heart-health', 'cholesterol-reducing', 'isoflavones', 'beta-glucan']
   },
   {
-    id: 's10', name: 'Cottage Cheese Dip', hindiName: 'पनीर डिप',
-    category: 'snack', cookTime: 10, protein: 16, calories: 180,
-    ingredients: ['150g soft paneer', 'Garlic', 'Lemon juice', 'Coriander', 'Green chilli', 'Salt', 'Cucumber sticks', 'Carrot sticks'],
-    steps: ['Blend paneer until smooth', 'Add garlic and lemon', 'Add chilli and coriander', 'Blend to creamy dip', 'Serve with vegetable sticks', 'Refrigerate for 30 minutes'],
-    seniorTip: 'High protein dip with raw vegetables. Crunching raw vegetables is excellent jaw exercise for seniors.',
-    tags: ['high-protein', 'vegetarian', 'no-cook', 'raw-vegetables']
+    id: 'h17', name: 'Tomato Onion Dal', hindiName: 'टमाटर प्याज दाल',
+    category: 'lunch', cookTime: 30, protein: 16, calories: 240,
+    healthTag: 'heart-health',
+    ingredients: ['1 cup masoor dal', '3 tomatoes', '2 onions', 'Garlic', 'Turmeric', 'Mustard oil', 'Coriander', 'Lemon'],
+    steps: ['Cook dal with tomatoes and turmeric', 'Fry onions until dark golden', 'Add garlic to onions', 'Mix with dal', 'Add mustard oil temper', 'Finish with lemon'],
+    seniorTip: 'Quercetin in onions reduces blood pressure and clot formation. Tomato reduces heart attack risk 30%.',
+    tags: ['heart-health', 'quercetin', 'anti-clotting', 'blood-pressure']
   },
   {
-    id: 's11', name: 'Almonds and Walnuts', hindiName: 'बादाम अखरोट',
-    category: 'snack', cookTime: 2, protein: 8, calories: 180,
-    ingredients: ['10 almonds', '5 walnuts', '5 cashews', 'Pinch of black salt', 'Turmeric milk optional'],
-    steps: ['Soak almonds overnight', 'Peel soaked almonds', 'Mix all nuts together', 'Add black salt', 'Eat slowly chewing well', 'Have with warm turmeric milk'],
-    seniorTip: 'Soaked almonds are easier to digest than raw. Walnuts are best brain food — have daily for cognitive health.',
-    tags: ['high-protein', 'vegetarian', 'brain-health', 'bone-health', 'daily-essential']
+    id: 'h18', name: 'Grilled Sardines', hindiName: 'ग्रिल्ड सार्डिन',
+    category: 'lunch', cookTime: 15, protein: 28, calories: 200,
+    healthTag: 'heart-health',
+    ingredients: ['300g sardines or small fish', 'Ginger garlic paste', 'Lemon', 'Turmeric', 'Chilli', 'Mustard oil', 'Curry leaves'],
+    steps: ['Clean and score fish', 'Marinate with spices', 'Grill on high heat', 'Cook 4-5 minutes each side', 'Squeeze lemon', 'Serve with onion rings'],
+    seniorTip: 'Small fish like sardines have highest omega-3 content. Eat with bones for extra calcium. Weekly must.',
+    tags: ['heart-health', 'omega-3', 'calcium', 'coastal-food']
   },
   {
-    id: 's12', name: 'Besan Ladoo', hindiName: 'बेसन लड्डू',
+    id: 'h19', name: 'Jeera Rice with Dal', hindiName: 'जीरा चावल दाल',
+    category: 'dinner', cookTime: 30, protein: 16, calories: 360,
+    healthTag: 'heart-health',
+    ingredients: ['1 cup basmati rice', '1 cup dal', 'Cumin seeds', 'Bay leaves', 'Ghee', 'Salt', 'Coriander'],
+    steps: ['Cook rice with cumin and bay leaves', 'Cook dal separately', 'Make ghee and cumin temper for dal', 'Serve rice with dal', 'Add coriander on top', 'Eat together'],
+    seniorTip: 'Basmati rice has lower glycemic index than regular rice. Cumin aids digestion and reduces bloating.',
+    tags: ['heart-health', 'lower-gi', 'digestive', 'traditional']
+  },
+  {
+    id: 'h20', name: 'Methi Water Morning', hindiName: 'मेथी पानी',
+    category: 'snack', cookTime: 2, protein: 2, calories: 20,
+    healthTag: 'heart-health',
+    ingredients: ['1 tsp fenugreek seeds', '1 glass water', 'Optional lemon'],
+    steps: ['Soak fenugreek seeds overnight', 'Morning strain water', 'Drink on empty stomach', 'Can also eat seeds', 'Follow with breakfast', 'Do this daily'],
+    seniorTip: 'Methi reduces total cholesterol by 14% and LDL by 18%. Simple daily habit with big heart benefits.',
+    tags: ['heart-health', 'cholesterol-14-percent', 'daily-habit', 'traditional-remedy']
+  },
+  {
+    id: 'h21', name: 'Turmeric Milk', hindiName: 'हल्दी दूध',
+    category: 'dinner', cookTime: 5, protein: 8, calories: 150,
+    healthTag: 'heart-health',
+    ingredients: ['1 glass milk', '1 tsp turmeric', '1 tsp honey', 'Pinch black pepper', 'Cardamom', 'Saffron strands'],
+    steps: ['Heat milk', 'Add turmeric and black pepper', 'Add cardamom', 'Add honey and saffron', 'Stir well', 'Drink before bed'],
+    seniorTip: 'Black pepper increases curcumin absorption 2000%. Turmeric reduces inflammation and protects arteries.',
+    tags: ['heart-health', 'anti-inflammatory', 'curcumin', 'nightly-ritual']
+  },
+  {
+    id: 'h22', name: 'Rajma with Brown Rice', hindiName: 'राजमा ब्राउन राइस',
+    category: 'lunch', cookTime: 50, protein: 20, calories: 420,
+    healthTag: 'heart-health',
+    ingredients: ['1 cup rajma', '1 cup brown rice', 'Onion', 'Tomato', 'Ginger garlic', 'Minimal oil', 'Whole spices'],
+    steps: ['Soak rajma overnight', 'Pressure cook rajma', 'Make tomato masala', 'Add rajma to masala', 'Cook brown rice', 'Serve together'],
+    seniorTip: 'Rajma potassium reduces blood pressure. Brown rice fiber reduces cholesterol. Perfect heart meal combo.',
+    tags: ['heart-health', 'potassium-rich', 'blood-pressure', 'complete-meal']
+  },
+  {
+    id: 'h23', name: 'Cucumber Mint Detox Water', hindiName: 'खीरा पुदीना पानी',
+    category: 'snack', cookTime: 5, protein: 0, calories: 10,
+    healthTag: 'heart-health',
+    ingredients: ['1 cucumber sliced', 'Fresh mint', '1 lemon sliced', 'Ginger slices', 'Water 1 liter', 'Ice cubes'],
+    steps: ['Add all ingredients to jug', 'Add cold water', 'Add ice cubes', 'Let infuse 2 hours', 'Drink throughout day', 'Refill water twice'],
+    seniorTip: 'This infused water flushes sodium and reduces blood pressure. Drink 8 glasses daily for heart health.',
+    tags: ['heart-health', 'sodium-flush', 'blood-pressure', 'hydration', 'zero-calorie']
+  },
+  {
+    id: 'h24', name: 'Sabut Moong Dal', hindiName: 'साबुत मूंग दाल',
+    category: 'dinner', cookTime: 35, protein: 18, calories: 280,
+    healthTag: 'heart-health',
+    ingredients: ['1 cup whole green moong', 'Onion', 'Tomato', 'Ginger garlic', 'Turmeric', 'Minimal ghee', 'Coriander', 'Lemon'],
+    steps: ['Soak moong 4 hours', 'Cook in pressure cooker', 'Make onion tomato masala', 'Add cooked dal', 'Simmer 10 minutes', 'Finish with lemon'],
+    seniorTip: 'Whole moong is better than split for heart. High in magnesium which is natural blood pressure regulator.',
+    tags: ['heart-health', 'magnesium-rich', 'blood-pressure', 'whole-grain']
+  },
+  {
+    id: 'h25', name: 'Arjuna Bark Tea', hindiName: 'अर्जुन चाय',
+    category: 'snack', cookTime: 10, protein: 0, calories: 20,
+    healthTag: 'heart-health',
+    ingredients: ['1 tsp arjuna bark powder', '1 cup milk or water', 'Cinnamon', 'Cardamom', 'Honey'],
+    steps: ['Boil water with arjuna powder', 'Add milk if desired', 'Add cinnamon and cardamom', 'Simmer 5 minutes', 'Strain and add honey', 'Drink warm'],
+    seniorTip: 'Arjuna bark is Ayurvedas heart medicine. Strengthens heart muscle. Take daily under doctor guidance.',
+    tags: ['heart-health', 'ayurvedic', 'heart-strengthening', 'traditional-medicine']
+  },
+  // ========== DIABETES FRIENDLY (25) ==========
+  {
+    id: 'db1', name: 'Bitter Gourd Juice', hindiName: 'करेला रस',
+    category: 'breakfast', cookTime: 5, protein: 2, calories: 30,
+    healthTag: 'diabetes',
+    ingredients: ['2 karela', '1 inch ginger', 'Lemon', 'Black salt', 'Amla optional'],
+    steps: ['Wash and chop karela', 'Blend with ginger', 'Strain juice', 'Add lemon and black salt', 'Add amla if available', 'Drink immediately on empty stomach'],
+    seniorTip: 'Karela contains charantin that acts like insulin. Reduces blood sugar by up to 20%. Drink every morning.',
+    tags: ['diabetes', 'blood-sugar', 'natural-insulin', 'morning-ritual', 'medicinal']
+  },
+  {
+    id: 'db2', name: 'Ragi Idli', hindiName: 'रागी इडली',
+    category: 'breakfast', cookTime: 30, protein: 12, calories: 200,
+    healthTag: 'diabetes',
+    ingredients: ['1 cup ragi', '1/2 cup urad dal', 'Salt', 'Water', 'Oil for greasing'],
+    steps: ['Soak ragi and dal separately', 'Grind and mix', 'Ferment overnight', 'Steam in idli molds', 'Cook 12 minutes', 'Serve with sambar'],
+    seniorTip: 'Ragi has glycemic index of 54 vs 72 for white rice. Massive blood sugar improvement. Perfect diabetic breakfast.',
+    tags: ['diabetes', 'low-gi', 'ragi', 'fermented', 'south-indian']
+  },
+  {
+    id: 'db3', name: 'Jamun Smoothie', hindiName: 'जामुन स्मूदी',
+    category: 'breakfast', cookTime: 5, protein: 8, calories: 160,
+    healthTag: 'diabetes',
+    ingredients: ['1 cup jamun (black plum)', '200g curd', 'Ginger', 'Cinnamon', 'Black salt', 'Ice'],
+    steps: ['Deseed jamun', 'Blend with curd', 'Add ginger and cinnamon', 'Add black salt', 'Blend with ice', 'Drink immediately'],
+    seniorTip: 'Jamun seeds powder is Ayurvedas best diabetes medicine. The fruit itself reduces blood sugar naturally.',
+    tags: ['diabetes', 'jamun', 'blood-sugar', 'ayurvedic', 'seasonal']
+  },
+  {
+    id: 'db4', name: 'Sprouts Breakfast Bowl', hindiName: 'अंकुरित नाश्ता बाउल',
+    category: 'breakfast', cookTime: 10, protein: 16, calories: 180,
+    healthTag: 'diabetes',
+    ingredients: ['1 cup mixed sprouts', '100g curd', 'Cucumber', 'Tomato', 'Lemon', 'Cumin powder', 'Coriander'],
+    steps: ['Steam sprouts lightly', 'Add curd over sprouts', 'Add vegetables', 'Season with cumin and lemon', 'Toss gently', 'Eat immediately'],
+    seniorTip: 'Sprouting reduces glycemic index by 25-30%. Curd protein slows sugar absorption. Perfect diabetic breakfast.',
+    tags: ['diabetes', 'low-gi', 'blood-sugar-control', 'probiotic']
+  },
+  {
+    id: 'db5', name: 'Cinnamon Oats', hindiName: 'दालचीनी ओट्स',
+    category: 'breakfast', cookTime: 10, protein: 10, calories: 220,
+    healthTag: 'diabetes',
+    ingredients: ['1 cup steel-cut oats', '1 tsp cinnamon', 'Almond milk', 'Chia seeds', '1 tsp honey', 'Nuts'],
+    steps: ['Cook oats in almond milk', 'Add cinnamon while cooking', 'Stir well and cook 8 minutes', 'Add chia seeds', 'Top with nuts', 'Add minimal honey'],
+    seniorTip: 'Cinnamon lowers fasting blood sugar by 24-29%. Steel cut oats have lower GI than rolled. Use daily.',
+    tags: ['diabetes', 'cinnamon', 'blood-sugar-29-percent', 'low-gi', 'daily']
+  },
+  {
+    id: 'db6', name: 'Methi Dal', hindiName: 'मेथी दाल',
+    category: 'lunch', cookTime: 30, protein: 16, calories: 240,
+    healthTag: 'diabetes',
+    ingredients: ['1 cup chana dal', '1 cup methi leaves', 'Onion', 'Tomato', 'Garlic', 'Turmeric', 'Cumin', 'Minimal oil'],
+    steps: ['Cook chana dal with turmeric', 'Saute onion and tomato', 'Add fresh methi leaves', 'Add dal and spices', 'Cook 10 minutes', 'Serve with roti'],
+    seniorTip: 'Methi seeds have galactomannan fiber that slows sugar absorption. Reduces post-meal glucose spike.',
+    tags: ['diabetes', 'galactomannan', 'glucose-spike', 'blood-sugar', 'anti-diabetic']
+  },
+  {
+    id: 'db7', name: 'Chicken Vegetable Soup', hindiName: 'चिकन सब्जी सूप',
+    category: 'lunch', cookTime: 35, protein: 24, calories: 200,
+    healthTag: 'diabetes',
+    ingredients: ['200g chicken', 'Broccoli', 'Spinach', 'Beans', 'Garlic', 'Ginger', 'Black pepper', 'Salt'],
+    steps: ['Boil chicken with garlic ginger', 'Shred chicken', 'Add vegetables to broth', 'Cook 10 minutes', 'Add shredded chicken', 'Season and serve'],
+    seniorTip: 'High protein meal without carbs. Protein does not raise blood sugar. Best diabetic lunch. Very filling.',
+    tags: ['diabetes', 'no-carb', 'high-protein', 'blood-sugar-safe']
+  },
+  {
+    id: 'db8', name: 'Bajra Khichdi', hindiName: 'बाजरा खिचड़ी',
+    category: 'dinner', cookTime: 30, protein: 12, calories: 300,
+    healthTag: 'diabetes',
+    ingredients: ['1/2 cup bajra', '1/2 cup moong dal', 'Ghee', 'Cumin', 'Turmeric', 'Asafoetida', 'Salt'],
+    steps: ['Soak bajra 2 hours', 'Cook with dal', 'Add turmeric and salt', 'Make ghee temper', 'Mix and serve', 'Eat with pickle and curd'],
+    seniorTip: 'Bajra has glycemic index of 55 vs 72 for rice. High in magnesium which improves insulin sensitivity.',
+    tags: ['diabetes', 'low-gi', 'magnesium', 'insulin-sensitivity', 'bajra']
+  },
+  {
+    id: 'db9', name: 'Lauki Juice', hindiName: 'लौकी रस',
+    category: 'snack', cookTime: 5, protein: 2, calories: 25,
+    healthTag: 'diabetes',
+    ingredients: ['1 small lauki', 'Mint leaves', 'Ginger', 'Lemon', 'Black salt', 'Water'],
+    steps: ['Peel and chop lauki', 'Blend with water', 'Add mint and ginger', 'Add lemon and salt', 'Strain if preferred', 'Drink fresh'],
+    seniorTip: 'Lauki juice reduces fasting blood sugar and controls Type 2 diabetes naturally. Drink every morning.',
+    tags: ['diabetes', 'fasting-sugar', 'natural-remedy', 'daily-ritual']
+  },
+  {
+    id: 'db10', name: 'Mixed Dal with Drumstick', hindiName: 'सहजन दाल',
+    category: 'lunch', cookTime: 35, protein: 18, calories: 260,
+    healthTag: 'diabetes',
+    ingredients: ['Mixed dal', 'Drumstick pieces', 'Tomato', 'Onion', 'Turmeric', 'Sambar masala', 'Mustard seeds', 'Curry leaves'],
+    steps: ['Cook dal with drumstick', 'Add tomato and masala', 'Make mustard temper', 'Add curry leaves', 'Mix and simmer', 'Serve with brown rice'],
+    seniorTip: 'Drumstick (moringa) leaves reduce blood sugar and improve insulin function. Eat drumstick 3x per week.',
+    tags: ['diabetes', 'moringa', 'insulin-function', 'blood-sugar', 'superfood']
+  },
+  {
+    id: 'db11', name: 'Tofu Bhurji', hindiName: 'टोफू भुर्जी',
+    category: 'breakfast', cookTime: 15, protein: 18, calories: 180,
+    healthTag: 'diabetes',
+    ingredients: ['200g firm tofu', 'Onion', 'Tomato', 'Turmeric', 'Cumin', 'Minimal oil', 'Salt', 'Coriander'],
+    steps: ['Crumble tofu', 'Saute onion and tomato', 'Add turmeric and cumin', 'Add crumbled tofu', 'Cook 5 minutes', 'Serve with roti'],
+    seniorTip: 'Tofu protein does not raise blood sugar. Soya protein improves insulin sensitivity. Best diabetic protein source.',
+    tags: ['diabetes', 'soya', 'insulin-sensitivity', 'no-sugar-spike', 'vegetarian']
+  },
+  {
+    id: 'db12', name: 'Palak Soup', hindiName: 'पालक सूप',
+    category: 'dinner', cookTime: 15, protein: 8, calories: 100,
+    healthTag: 'diabetes',
+    ingredients: ['3 cups spinach', 'Garlic', 'Onion', 'Ginger', 'Black pepper', 'Cornflour minimal', 'Salt', 'Lemon'],
+    steps: ['Saute garlic and onion', 'Add spinach and cook', 'Blend smooth', 'Thicken minimally with cornflour', 'Add pepper and lemon', 'Serve hot'],
+    seniorTip: 'Spinach magnesium improves insulin sensitivity. This soup has almost no carbs. Perfect diabetic dinner.',
+    tags: ['diabetes', 'low-carb', 'magnesium', 'insulin-sensitivity', 'night-safe']
+  },
+  {
+    id: 'db13', name: 'Amla Juice Morning Shot', hindiName: 'आंवला शॉट',
+    category: 'breakfast', cookTime: 5, protein: 1, calories: 25,
+    healthTag: 'diabetes',
+    ingredients: ['2 amla', 'Turmeric pinch', 'Black pepper', 'Ginger', 'Warm water'],
+    steps: ['Blend or grate amla', 'Extract juice', 'Add turmeric and pepper', 'Add ginger juice', 'Mix with warm water', 'Drink on empty stomach'],
+    seniorTip: 'Amla chromium reduces blood sugar and improves insulin response. Daily amla reduces HbA1c in diabetics.',
+    tags: ['diabetes', 'chromium', 'hba1c', 'insulin-response', 'daily-shot']
+  },
+  {
+    id: 'db14', name: 'Roasted Chana Snack', hindiName: 'भुना चना स्नैक',
+    category: 'snack', cookTime: 5, protein: 10, calories: 120,
+    healthTag: 'diabetes',
+    ingredients: ['50g roasted chana (kala or safed)', 'Black salt', 'Lemon juice', 'Cumin powder', 'Chilli powder'],
+    steps: ['Take roasted chana', 'Add black salt', 'Squeeze lemon', 'Add cumin and chilli', 'Mix and eat', 'Chew slowly'],
+    seniorTip: 'Chana glycemic index is only 28! Safest snack for diabetics. High protein slows sugar release.',
+    tags: ['diabetes', 'gi-28', 'very-safe', 'affordable', 'daily-snack']
+  },
+  {
+    id: 'db15', name: 'Fish Dal Combo', hindiName: 'मछली दाल',
+    category: 'lunch', cookTime: 40, protein: 32, calories: 320,
+    healthTag: 'diabetes',
+    ingredients: ['200g fish', '1/2 cup masoor dal', 'Onion', 'Tomato', 'Turmeric', 'Mustard oil', 'Spices'],
+    steps: ['Cook dal separately', 'Make fish curry with mustard oil', 'Serve fish curry over dal', 'Add mustard oil temper', 'Mix before eating', 'Serve with roti'],
+    seniorTip: 'Omega-3 in fish improves insulin resistance. Dal fiber slows glucose absorption. Together they manage diabetes well.',
+    tags: ['diabetes', 'insulin-resistance', 'omega-3', 'glucose-absorption', 'bengali-style']
+  },
+  {
+    id: 'db16', name: 'Cucumber Raita', hindiName: 'खीरा रायता',
+    category: 'snack', cookTime: 5, protein: 10, calories: 100,
+    healthTag: 'diabetes',
+    ingredients: ['200g curd', '1 cucumber', 'Cumin powder', 'Black salt', 'Mint', 'Green chilli optional'],
+    steps: ['Grate or chop cucumber', 'Whisk curd smooth', 'Mix cucumber into curd', 'Add spices', 'Add mint', 'Serve chilled'],
+    seniorTip: 'Curd reduces post-meal blood sugar by 18%. Cucumber has almost zero glycemic impact. Safe snack anytime.',
+    tags: ['diabetes', 'post-meal-sugar', 'zero-gi', 'probiotic', 'anytime-safe']
+  },
+  {
+    id: 'db17', name: 'Barley Khichdi', hindiName: 'जौ खिचड़ी',
+    category: 'dinner', cookTime: 35, protein: 14, calories: 320,
+    healthTag: 'diabetes',
+    ingredients: ['1/2 cup barley', '1/2 cup moong dal', 'Vegetables', 'Turmeric', 'Ghee', 'Cumin', 'Salt'],
+    steps: ['Soak barley 2 hours', 'Cook barley and dal together', 'Add vegetables', 'Make ghee temper', 'Mix and serve', 'Eat with curd'],
+    seniorTip: 'Barley has glycemic index of 28! Lowest of all grains. Beta-glucan dramatically reduces blood sugar after meals.',
+    tags: ['diabetes', 'gi-28', 'lowest-gi-grain', 'beta-glucan', 'blood-sugar-control']
+  },
+  {
+    id: 'db18', name: 'Egg Salad No Carb', hindiName: 'अंडा सलाद नो कार्ब',
+    category: 'lunch', cookTime: 15, protein: 20, calories: 200,
+    healthTag: 'diabetes',
+    ingredients: ['3 eggs boiled', 'Avocado', 'Cucumber', 'Tomato', 'Mustard sauce', 'Lemon', 'Black pepper', 'Lettuce'],
+    steps: ['Boil and slice eggs', 'Mash avocado with lemon', 'Arrange on lettuce', 'Add vegetables', 'Add mustard sauce', 'Season with pepper'],
+    seniorTip: 'Zero carbohydrate lunch! Eggs and avocado do not raise blood sugar at all. Perfect diabetic meal.',
+    tags: ['diabetes', 'zero-carb', 'no-blood-sugar-rise', 'keto-friendly']
+  },
+  {
+    id: 'db19', name: 'Gymnema Tea', hindiName: 'गुड़मार चाय',
+    category: 'snack', cookTime: 5, protein: 0, calories: 10,
+    healthTag: 'diabetes',
+    ingredients: ['1 tsp gymnema leaves or powder', '1 cup water', 'Ginger', 'Cinnamon stick', 'Honey tiny amount'],
+    steps: ['Boil water with gymnema', 'Add ginger and cinnamon', 'Simmer 5 minutes', 'Strain', 'Add tiny honey if needed', 'Drink warm'],
+    seniorTip: 'Gymnema (gurmar) blocks sugar receptors and reduces absorption. Hindi name means sugar destroyer!',
+    tags: ['diabetes', 'gymnema', 'sugar-blocking', 'ayurvedic', 'natural-remedy']
+  },
+  {
+    id: 'db20', name: 'Paneer Low Carb Bowl', hindiName: 'पनीर लो कार्ब बाउल',
+    category: 'dinner', cookTime: 15, protein: 22, calories: 260,
+    healthTag: 'diabetes',
+    ingredients: ['200g paneer', 'Spinach', 'Mushrooms', 'Bell peppers', 'Garlic', 'Olive oil', 'Spices', 'Lemon'],
+    steps: ['Cube and pan fry paneer', 'Saute garlic in olive oil', 'Add mushrooms and spinach', 'Add bell peppers', 'Add paneer back', 'Season and serve'],
+    seniorTip: 'Low carb dinner does not spike blood sugar overnight. Paneer provides protein for overnight recovery.',
+    tags: ['diabetes', 'low-carb', 'overnight-safe', 'high-protein', 'no-glucose-spike']
+  },
+  {
+    id: 'db21', name: 'Dal Palak Soup', hindiName: 'दाल पालक सूप',
+    category: 'dinner', cookTime: 25, protein: 14, calories: 180,
+    healthTag: 'diabetes',
+    ingredients: ['1/2 cup masoor dal', '2 cups spinach', 'Garlic', 'Turmeric', 'Lemon', 'Cumin', 'Black pepper'],
+    steps: ['Cook dal and spinach together', 'Blend smooth', 'Adjust consistency', 'Add garlic and cumin temper', 'Season with pepper and lemon', 'Serve hot'],
+    seniorTip: 'Dal protein + spinach magnesium together reduce fasting blood sugar. Evening ritual for diabetics.',
+    tags: ['diabetes', 'fasting-sugar', 'evening-ritual', 'magnesium', 'protein']
+  },
+  {
+    id: 'db22', name: 'Neem Leaf Chutney', hindiName: 'नीम चटनी',
+    category: 'snack', cookTime: 5, protein: 2, calories: 20,
+    healthTag: 'diabetes',
+    ingredients: ['10 fresh neem leaves', 'Mint', 'Coriander', 'Garlic', 'Ginger', 'Lemon', 'Salt', 'Green chilli'],
+    steps: ['Wash neem leaves well', 'Blend with other herbs', 'Add garlic and ginger', 'Add lemon and salt', 'Blend to smooth chutney', 'Have 1 tsp with meals'],
+    seniorTip: 'Neem reduces blood sugar and improves pancreatic function. Bitter taste activates insulin secretion.',
+    tags: ['diabetes', 'neem', 'pancreatic-function', 'insulin-secretion', 'ayurvedic']
+  },
+  {
+    id: 'db23', name: 'Chickpea Salad', hindiName: 'काबुली चना सलाद',
+    category: 'lunch', cookTime: 10, protein: 16, calories: 240,
+    healthTag: 'diabetes',
+    ingredients: ['1 cup boiled chickpeas', 'Cucumber', 'Tomato', 'Onion', 'Bell pepper', 'Lemon', 'Olive oil', 'Parsley or coriander'],
+    steps: ['Drain and rinse chickpeas', 'Chop all vegetables', 'Mix together', 'Add lemon and olive oil', 'Season with salt and pepper', 'Refrigerate 30 minutes'],
+    seniorTip: 'Chickpeas have glycemic index of only 28. Eating them reduces post-meal blood sugar by up to 36%.',
+    tags: ['diabetes', 'gi-28', 'post-meal-sugar-36-percent', 'high-fiber', 'mediterranean']
+  },
+  {
+    id: 'db24', name: 'Flaxseed Roti', hindiName: 'अलसी रोटी',
+    category: 'dinner', cookTime: 20, protein: 12, calories: 200,
+    healthTag: 'diabetes',
+    ingredients: ['3/4 cup whole wheat flour', '1/4 cup flaxseed powder', 'Salt', 'Oil minimal', 'Water'],
+    steps: ['Mix wheat flour and flaxseed powder', 'Add salt and minimal oil', 'Knead firm dough with water', 'Make medium thickness rotis', 'Cook on tawa both sides', 'Serve with dal or sabzi'],
+    seniorTip: 'Flaxseed lignans and omega-3 improve insulin sensitivity. This roti is 30% lower GI than plain wheat roti.',
+    tags: ['diabetes', 'lower-gi', 'insulin-sensitivity', 'omega-3', 'modified-roti']
+  },
+  {
+    id: 'db25', name: 'Moong Sprout Dhokla', hindiName: 'मूंग अंकुरित ढोकला',
+    category: 'snack', cookTime: 30, protein: 14, calories: 160,
+    healthTag: 'diabetes',
+    ingredients: ['1 cup moong sprouts', 'Ginger green chilli paste', 'Curd', 'Eno fruit salt', 'Turmeric', 'Salt', 'Mustard seeds', 'Curry leaves'],
+    steps: ['Blend sprouts with curd and spices', 'Add eno just before steaming', 'Pour in greased plates', 'Steam 12 minutes', 'Make mustard temper', 'Serve with green chutney'],
+    seniorTip: 'Fermented sprout dhokla has very low glycemic index. Protein and fiber together prevent sugar spikes.',
+    tags: ['diabetes', 'low-gi', 'fermented', 'gujarati', 'sugar-spike-prevention']
+  },
+  // ========== BONE & JOINT HEALTH (25) ==========
+  {
+    id: 'bj1', name: 'Sesame Milk', hindiName: 'तिल का दूध',
+    category: 'breakfast', cookTime: 5, protein: 8, calories: 180,
+    healthTag: 'bone-joint',
+    ingredients: ['2 tbsp white sesame seeds', '1 glass milk', 'Honey', 'Cardamom', 'Saffron', 'Turmeric'],
+    steps: ['Roast sesame until golden', 'Blend with milk', 'Heat gently', 'Add honey and cardamom', 'Add saffron and turmeric', 'Drink warm morning and night'],
+    seniorTip: 'Sesame has highest calcium of any seed — 975mg per 100g! Daily sesame milk prevents osteoporosis.',
+    tags: ['bone-joint', 'calcium-975mg', 'osteoporosis', 'sesame', 'daily-essential']
+  },
+  {
+    id: 'bj2', name: 'Ragi Porridge', hindiName: 'रागी दलिया',
+    category: 'breakfast', cookTime: 10, protein: 10, calories: 220,
+    healthTag: 'bone-joint',
+    ingredients: ['1 cup ragi flour', '1.5 cups milk', 'Jaggery', 'Cardamom', 'Almonds', 'Dry fruits'],
+    steps: ['Mix ragi flour in cold water', 'Add to hot milk', 'Cook stirring constantly', 'Add jaggery and cardamom', 'Cook until thick', 'Top with almonds and dry fruits'],
+    seniorTip: 'Ragi has 344mg calcium per 100g — highest of all grains. Essential daily food for seniors with bone issues.',
+    tags: ['bone-joint', 'calcium-344mg', 'highest-grain-calcium', 'ragi', 'bone-building']
+  },
+  {
+    id: 'bj3', name: 'Fish Bone Soup', hindiName: 'मछली हड्डी सूप',
+    category: 'lunch', cookTime: 60, protein: 24, calories: 200,
+    healthTag: 'bone-joint',
+    ingredients: ['500g fish with bones', 'Ginger', 'Garlic', 'Onion', 'Turmeric', 'Black pepper', 'Lemon', 'Coriander'],
+    steps: ['Boil fish with bones for 45 minutes', 'Extract and save all broth', 'Remove large bones', 'Blend fish meat into broth', 'Add spices and simmer', 'Serve hot with lemon'],
+    seniorTip: 'Fish bones release calcium and collagen. This broth rebuilds joints and bones. Traditional healing food.',
+    tags: ['bone-joint', 'collagen', 'joint-rebuilding', 'bone-broth', 'calcium']
+  },
+  {
+    id: 'bj4', name: 'Paneer and Spinach', hindiName: 'पनीर पालक',
+    category: 'lunch', cookTime: 25, protein: 22, calories: 300,
+    healthTag: 'bone-joint',
+    ingredients: ['200g paneer', '3 cups spinach', 'Tomato', 'Garlic', 'Turmeric', 'Oil', 'Spices'],
+    steps: ['Blanch and puree spinach', 'Make light gravy', 'Add paneer cubes', 'Cook 10 minutes', 'Add calcium-rich garnishes', 'Serve with roti'],
+    seniorTip: 'Paneer 200mg + spinach 99mg calcium per 100g. Vitamin K in spinach directs calcium to bones not arteries.',
+    tags: ['bone-joint', 'calcium', 'vitamin-k', 'calcium-to-bones', 'joint-health']
+  },
+  {
+    id: 'bj5', name: 'Turmeric Golden Milk', hindiName: 'सोना दूध',
+    category: 'dinner', cookTime: 5, protein: 8, calories: 150,
+    healthTag: 'bone-joint',
+    ingredients: ['1 glass milk', '1.5 tsp turmeric', '1 tsp black pepper', '1 tsp ginger powder', 'Honey', 'Cardamom'],
+    steps: ['Heat milk until hot', 'Add turmeric and pepper', 'Add ginger powder', 'Add cardamom and honey', 'Stir well', 'Drink before bed'],
+    seniorTip: 'Curcumin in turmeric reduces joint inflammation better than ibuprofen in studies. Daily golden milk reduces arthritis pain.',
+    tags: ['bone-joint', 'anti-inflammatory', 'arthritis', 'curcumin', 'pain-relief', 'daily-ritual']
+  },
+  {
+    id: 'bj6', name: 'Sesame Chikki', hindiName: 'तिल चिक्की',
+    category: 'snack', cookTime: 15, protein: 8, calories: 200,
+    healthTag: 'bone-joint',
+    ingredients: ['1 cup white sesame', 'Jaggery', 'Ghee', 'Cardamom'],
+    steps: ['Roast sesame golden', 'Melt jaggery with ghee', 'Cook to hard ball stage', 'Add sesame and cardamom', 'Press thin on plate', 'Cut into pieces when warm'],
+    seniorTip: 'Traditional Indian bone food! Sesame jaggery gives calcium and iron together. Have 2 pieces daily.',
+    tags: ['bone-joint', 'calcium', 'iron', 'traditional', 'daily-snack']
+  },
+  {
+    id: 'bj7', name: 'Dahi with Almonds', hindiName: 'बादाम दही',
+    category: 'breakfast', cookTime: 5, protein: 14, calories: 220,
+    healthTag: 'bone-joint',
+    ingredients: ['200g full-fat curd', '10 soaked almonds', '1 tbsp honey', 'Cardamom', 'Saffron', 'Pistachios'],
+    steps: ['Soak almonds overnight', 'Peel almonds', 'Whisk curd smooth', 'Add almonds to curd', 'Add honey and saffron', 'Top with pistachios'],
+    seniorTip: 'Curd is best bioavailable calcium source. Almonds add magnesium which is needed for calcium absorption.',
+    tags: ['bone-joint', 'bioavailable-calcium', 'magnesium', 'calcium-absorption', 'daily']
+  },
+  {
+    id: 'bj8', name: 'Moringa Dal Soup', hindiName: 'सहजन दाल सूप',
+    category: 'dinner', cookTime: 30, protein: 14, calories: 200,
+    healthTag: 'bone-joint',
+    ingredients: ['1/2 cup toor dal', 'Moringa leaves (drumstick leaves)', 'Drumstick pieces', 'Tomato', 'Tamarind', 'Sambar masala'],
+    steps: ['Cook dal with drumstick pieces', 'Add moringa leaves', 'Add tomato and tamarind', 'Add sambar masala', 'Simmer 10 minutes', 'Serve hot'],
+    seniorTip: 'Moringa has 17x more calcium than milk! Drumstick pieces release bone-building minerals into broth.',
+    tags: ['bone-joint', 'moringa', 'calcium-17x-milk', 'bone-building', 'superfood']
+  },
+  {
+    id: 'bj9', name: 'Almond Milk Chia Pudding', hindiName: 'बादाम चिया पुडिंग',
+    category: 'breakfast', cookTime: 5, protein: 10, calories: 220,
+    healthTag: 'bone-joint',
+    ingredients: ['3 tbsp chia seeds', '1 cup almond milk', '1 tsp honey', 'Vanilla essence', 'Almonds', 'Pomegranate'],
+    steps: ['Mix chia seeds in almond milk', 'Add honey and vanilla', 'Refrigerate overnight', 'Morning top with almonds', 'Add pomegranate seeds', 'Eat cold'],
+    seniorTip: 'Chia seeds have 631mg calcium per 100g! Almond milk adds more. Overnight prep saves morning time for seniors.',
+    tags: ['bone-joint', 'chia-calcium-631mg', 'easy-prep', 'overnight', 'anti-inflammatory']
+  },
+  {
+    id: 'bj10', name: 'Sarson Saag', hindiName: 'सरसों साग',
+    category: 'lunch', cookTime: 45, protein: 12, calories: 240,
+    healthTag: 'bone-joint',
+    ingredients: ['3 cups mustard leaves', '1 cup spinach', '1 cup bathua', 'Maize flour', 'Garlic', 'Ginger', 'Ghee', 'Onion'],
+    steps: ['Boil all greens together', 'Blend until smooth', 'Add maize flour for thickness', 'Cook on low heat 20 minutes', 'Make ghee and garlic temper', 'Serve with makki roti'],
+    seniorTip: 'Mustard greens have 115mg calcium per 100g and high Vitamin K. This Punjabi dish is natural bone medicine.',
+    tags: ['bone-joint', 'vitamin-k', 'calcium', 'punjabi', 'seasonal', 'winter-special']
+  },
+  {
+    id: 'bj11', name: 'Eggshell Calcium Drink', hindiName: 'अंडे के छिलके का कैल्शियम',
+    category: 'snack', cookTime: 10, protein: 2, calories: 20,
+    healthTag: 'bone-joint',
+    ingredients: ['1 eggshell', 'Lemon juice', 'Water', 'Honey'],
+    steps: ['Wash eggshell thoroughly', 'Bake at 200°C for 10 minutes', 'Grind to fine powder', 'Add 1/4 tsp to lemon water', 'Add honey', 'Drink immediately'],
+    seniorTip: 'Eggshell is 95% calcium carbonate — 800mg per half shell! Lemon dissolves it for maximum absorption.',
+    tags: ['bone-joint', 'calcium-800mg', 'zero-waste', 'maximum-absorption', 'innovative']
+  },
+  {
+    id: 'bj12', name: 'Paneer Tikka with Bones', hindiName: 'पनीर टिक्का',
+    category: 'snack', cookTime: 20, protein: 20, calories: 260,
+    healthTag: 'bone-joint',
+    ingredients: ['200g paneer', 'Curd marinade', 'Tikka masala', 'Bell peppers', 'Onion', 'Lemon', 'Chaat masala'],
+    steps: ['Marinate paneer in spiced curd', 'Grill on high heat', 'Cook until golden marks', 'Sprinkle chaat masala', 'Squeeze lemon', 'Serve hot'],
+    seniorTip: 'Eating paneer daily provides 200mg calcium per 100g. Regular intake prevents bone density loss in seniors.',
+    tags: ['bone-joint', 'calcium-daily', 'bone-density', 'prevention', 'daily-protein']
+  },
+  {
+    id: 'bj13', name: 'Small Fish Fry', hindiName: 'छोटी मछली',
+    category: 'lunch', cookTime: 20, protein: 28, calories: 220,
+    healthTag: 'bone-joint',
+    ingredients: ['300g small fish (ate khalli or similar)', 'Mustard oil', 'Turmeric', 'Chilli', 'Ginger garlic', 'Salt', 'Lemon'],
+    steps: ['Marinate small fish with spices', 'Heat mustard oil until smoking', 'Fry small fish crispy', 'Cook until bones are edible', 'Drain excess oil', 'Serve with lemon'],
+    seniorTip: 'Eat crispy small fish WITH bones. Edible fish bones give calcium directly. Best Indian bone food!',
+    tags: ['bone-joint', 'edible-bones', 'calcium-rich', 'omega-3', 'traditional']
+  },
+  {
+    id: 'bj14', name: 'Broccoli Stir Fry', hindiName: 'ब्रोकली स्टिर फ्राई',
+    category: 'dinner', cookTime: 15, protein: 8, calories: 140,
+    healthTag: 'bone-joint',
+    ingredients: ['2 cups broccoli', 'Garlic', 'Ginger', 'Soy sauce', 'Sesame oil', 'Sesame seeds', 'Pepper'],
+    steps: ['Blanch broccoli 2 minutes', 'Heat sesame oil', 'Add garlic and ginger', 'Add broccoli on high heat', 'Add soy sauce', 'Top with sesame seeds'],
+    seniorTip: 'Broccoli has 47mg calcium and high Vitamin K2. K2 directs calcium specifically to bone matrix, not arteries.',
+    tags: ['bone-joint', 'vitamin-k2', 'calcium-to-bone-matrix', 'broccoli', 'anti-cancer']
+  },
+  {
+    id: 'bj15', name: 'Ginger Turmeric Tea', hindiName: 'अदरक हल्दी चाय',
+    category: 'snack', cookTime: 5, protein: 1, calories: 30,
+    healthTag: 'bone-joint',
+    ingredients: ['1 inch ginger', '1 tsp turmeric', '1 tsp honey', '1 cup hot water', 'Lemon', 'Black pepper'],
+    steps: ['Boil water', 'Add grated ginger', 'Add turmeric and pepper', 'Steep 5 minutes', 'Strain into cup', 'Add honey and lemon'],
+    seniorTip: 'Ginger gingerols reduce joint pain like aspirin. Turmeric curcumin reduces arthritis swelling. Daily ritual.',
+    tags: ['bone-joint', 'joint-pain', 'arthritis', 'anti-inflammatory', 'pain-free-movement']
+  },
+  {
+    id: 'bj16', name: 'Sattu with Calcium', hindiName: 'कैल्शियम सत्तू',
+    category: 'breakfast', cookTime: 5, protein: 12, calories: 200,
+    healthTag: 'bone-joint',
+    ingredients: ['4 tbsp sattu', '1 tbsp sesame powder', '1 glass milk', 'Honey', 'Cardamom'],
+    steps: ['Mix sattu with sesame powder', 'Blend with milk', 'Add honey and cardamom', 'Mix until smooth', 'Drink immediately', 'Have with soaked almonds'],
+    seniorTip: 'Adding sesame to sattu boosts calcium massively. This drink gives 300mg calcium in one glass.',
+    tags: ['bone-joint', 'calcium-300mg', 'sattu', 'sesame', 'traditional']
+  },
+  {
+    id: 'bj17', name: 'Rajgira Ladoo', hindiName: 'राजगिरा लड्डू',
     category: 'snack', cookTime: 20, protein: 8, calories: 180,
-    ingredients: ['1 cup besan', 'Ghee', 'Jaggery', 'Cardamom', 'Almonds', 'Cashews'],
-    steps: ['Roast besan in ghee until fragrant', 'Add powdered jaggery', 'Add cardamom and nuts', 'Mix well and cool slightly', 'Form into small balls', 'Store in airtight container'],
-    seniorTip: 'Traditional protein sweet. Besan is high protein. Use jaggery not sugar for iron and minerals.',
-    tags: ['high-protein', 'vegetarian', 'traditional', 'sweet', 'festive']
+    healthTag: 'bone-joint',
+    ingredients: ['1 cup rajgira', 'Jaggery', 'Ghee', 'Cardamom', 'Sesame seeds', 'Cashews'],
+    steps: ['Puff rajgira in dry pan', 'Mix with sesame seeds', 'Melt jaggery with ghee', 'Mix all together quickly', 'Form into balls', 'Cool and store'],
+    seniorTip: 'Rajgira has 159mg calcium per 100g + sesame adds more. Used in navratri — traditional bone food.',
+    tags: ['bone-joint', 'calcium-159mg', 'rajgira', 'traditional', 'navratri', 'vrat']
   },
   {
-    id: 's13', name: 'Tuna Crackers', hindiName: 'टूना क्रैकर्स',
-    category: 'snack', cookTime: 5, protein: 20, calories: 220,
-    ingredients: ['1 can tuna', 'Whole wheat crackers', 'Lemon', 'Black pepper', 'Onion', 'Cucumber'],
-    steps: ['Drain tuna can', 'Mix with lemon and pepper', 'Add chopped onion and cucumber', 'Serve on whole wheat crackers', 'Top with cucumber slice', 'Eat immediately'],
-    seniorTip: 'Canned tuna is most convenient protein. 5-minute snack with 20g protein. Available everywhere.',
-    tags: ['very-high-protein', 'non-veg', 'quick', 'convenient']
+    id: 'bj18', name: 'Warm Bone Broth', hindiName: 'हड्डी शोरबा',
+    category: 'dinner', cookTime: 120, protein: 12, calories: 100,
+    healthTag: 'bone-joint',
+    ingredients: ['500g chicken or mutton bones', 'Onion', 'Garlic', 'Ginger', 'Turmeric', 'Apple cider vinegar', 'Black pepper', 'Salt'],
+    steps: ['Add bones to large pot with cold water', 'Add splash of apple cider vinegar', 'Boil and skim foam', 'Add vegetables and spices', 'Simmer 2-3 hours on low', 'Strain and drink warm'],
+    seniorTip: 'Long-simmered bone broth releases collagen, glucosamine, chondroitin — exact supplements doctors prescribe for joints!',
+    tags: ['bone-joint', 'collagen', 'glucosamine', 'chondroitin', 'joint-repair', 'natural-supplement']
   },
   {
-    id: 's14', name: 'Chana Dal Namkeen', hindiName: 'चना दाल नमकीन',
-    category: 'snack', cookTime: 20, protein: 12, calories: 200,
-    ingredients: ['1 cup chana dal', 'Oil for frying', 'Salt', 'Chilli powder', 'Amchur', 'Cumin powder'],
-    steps: ['Soak chana dal 2 hours', 'Dry completely on cloth', 'Deep fry until crispy', 'Drain on paper', 'Season with spices', 'Cool and store in box'],
-    seniorTip: 'Homemade namkeen is healthier than packaged. High protein. Better than chips for seniors.',
-    tags: ['high-protein', 'vegetarian', 'crunchy', 'homemade']
+    id: 'bj19', name: 'Nachni Roti', hindiName: 'नाचनी रोटी',
+    category: 'dinner', cookTime: 15, protein: 10, calories: 200,
+    healthTag: 'bone-joint',
+    ingredients: ['1 cup ragi (nachni) flour', 'Salt', 'Water', 'Ghee'],
+    steps: ['Mix ragi flour with water', 'Knead smooth dough', 'Make medium rotis', 'Cook on both sides on tawa', 'Apply ghee on hot roti', 'Serve with dal or curd'],
+    seniorTip: 'Ragi is Maharashtrian term for finger millet. Best grain for bone health. Eat ragi roti 5 days per week.',
+    tags: ['bone-joint', 'ragi', 'finger-millet', 'calcium-rich', 'maharashtrian']
   },
   {
-    id: 's15', name: 'Fruit Yogurt', hindiName: 'फ्रूट योगर्ट',
-    category: 'snack', cookTime: 5, protein: 10, calories: 160,
-    ingredients: ['200g curd', 'Mango or banana', 'Honey', 'Cardamom', 'Pomegranate seeds', 'Mint'],
-    steps: ['Whisk curd smooth', 'Add honey and cardamom', 'Add fruit pieces', 'Mix gently', 'Top with pomegranate', 'Garnish with mint'],
-    seniorTip: 'Curd is probiotic and high protein. Adding fruit provides natural vitamins and sugars for energy.',
-    tags: ['high-protein', 'vegetarian', 'probiotic', 'energy-boost', 'refreshing']
+    id: 'bj20', name: 'Coconut Milk Curry', hindiName: 'नारियल दूध करी',
+    category: 'lunch', cookTime: 30, protein: 16, calories: 320,
+    healthTag: 'bone-joint',
+    ingredients: ['200g paneer or chicken', 'Coconut milk', 'Vegetables', 'Curry leaves', 'Mustard seeds', 'Coconut oil', 'Spices'],
+    steps: ['Make base with mustard seeds and curry leaves', 'Add vegetables and cook', 'Add protein (paneer or chicken)', 'Pour coconut milk', 'Simmer 10 minutes', 'Serve with rice'],
+    seniorTip: 'Coconut has lauric acid which reduces joint inflammation. Curry leaves calcium prevents bone density loss.',
+    tags: ['bone-joint', 'lauric-acid', 'anti-inflammatory', 'bone-density', 'kerala-style']
   },
   {
-    id: 's16', name: 'Makhana Namkeen', hindiName: 'मखाना नमकीन',
-    category: 'snack', cookTime: 10, protein: 8, calories: 120,
-    ingredients: ['2 cups makhana', 'Ghee', 'Salt', 'Black pepper', 'Turmeric', 'Roasted cumin powder'],
-    steps: ['Heat ghee in pan', 'Add makhana and roast', 'Roast on low heat 8 minutes', 'Add all spices', 'Toss well', 'Cool and store in airtight box'],
-    seniorTip: 'Makhana is high protein low calorie. Anti-aging food. Excellent for seniors with diabetes and arthritis.',
-    tags: ['high-protein', 'vegetarian', 'anti-aging', 'diabetic-friendly', 'low-calorie']
+    id: 'bj21', name: 'Ajwain Water', hindiName: 'अजवाइन पानी',
+    category: 'snack', cookTime: 5, protein: 0, calories: 10,
+    healthTag: 'bone-joint',
+    ingredients: ['1 tsp ajwain seeds', '1 glass warm water', 'Lemon', 'Honey'],
+    steps: ['Soak ajwain in warm water 5 minutes', 'Or boil briefly', 'Strain', 'Add lemon and honey', 'Drink warm morning and evening', 'Can eat the seeds too'],
+    seniorTip: 'Ajwain reduces joint pain and stiffness. Traditional remedy for arthritis. Used in Ayurveda for 5000 years.',
+    tags: ['bone-joint', 'arthritis', 'joint-stiffness', 'ayurvedic', 'traditional-remedy']
   },
   {
-    id: 's17', name: 'Boiled Eggs', hindiName: 'उबले अंडे',
-    category: 'snack', cookTime: 12, protein: 18, calories: 150,
-    ingredients: ['3 eggs', 'Black salt', 'Chaat masala', 'Lemon juice', 'Black pepper', 'Coriander'],
-    steps: ['Boil eggs in water', 'Cook 10 minutes', 'Cool in cold water', 'Peel carefully', 'Season with black salt and masala', 'Add lemon and serve'],
-    seniorTip: 'Simplest high protein snack. Carry boiled eggs for travel. Never go hungry with eggs.',
-    tags: ['very-high-protein', 'non-veg', 'portable', 'travel-friendly']
+    id: 'bj22', name: 'Til Gur Chutney', hindiName: 'तिल गुड़ चटनी',
+    category: 'snack', cookTime: 10, protein: 6, calories: 160,
+    healthTag: 'bone-joint',
+    ingredients: ['3 tbsp roasted sesame', 'Jaggery', 'Ginger powder', 'Cardamom', 'Water'],
+    steps: ['Blend sesame into powder', 'Add jaggery and blend', 'Add ginger and cardamom', 'Add water for chutney consistency', 'Blend smooth', 'Have 2 tbsp daily'],
+    seniorTip: 'Sesame + jaggery = traditional Indian calcium and iron. This Makar Sankranti food eaten for bone health.',
+    tags: ['bone-joint', 'sesame', 'jaggery', 'calcium-iron', 'makar-sankranti', 'traditional']
   },
   {
-    id: 's18', name: 'Murmura Chivda', hindiName: 'मुरमुरा चिवड़ा',
-    category: 'snack', cookTime: 15, protein: 6, calories: 150,
-    ingredients: ['2 cups puffed rice', '3 tbsp peanuts', '1/4 cup chana dal', 'Curry leaves', 'Mustard seeds', 'Turmeric', 'Oil', 'Salt'],
-    steps: ['Roast peanuts and chana dal', 'Temper mustard seeds and curry leaves', 'Add puffed rice and toss', 'Add turmeric and salt', 'Roast on low heat', 'Cool and store'],
-    seniorTip: 'Light snack with protein from peanuts and dal. Very common across India. Easily portable.',
-    tags: ['protein', 'vegetarian', 'light', 'traditional', 'portable']
+    id: 'bj23', name: 'Fish Pulao', hindiName: 'मछली पुलाव',
+    category: 'dinner', cookTime: 40, protein: 28, calories: 380,
+    healthTag: 'bone-joint',
+    ingredients: ['200g fish fillet', '1 cup basmati rice', 'Whole spices', 'Onion', 'Tomato', 'Saffron', 'Ghee', 'Coriander'],
+    steps: ['Cook rice with whole spices', 'Make fish curry separately', 'Layer fish over rice', 'Cover and dum cook 10 minutes', 'Drizzle saffron milk', 'Garnish with fried onion'],
+    seniorTip: 'Fish omega-3 DHA reduces joint cartilage degradation. Eating fish 3x per week reduces arthritis pain significantly.',
+    tags: ['bone-joint', 'omega-3-dha', 'cartilage-protection', 'arthritis-pain', 'festive']
   },
   {
-    id: 's19', name: 'Dahi Vada', hindiName: 'दही वड़ा',
-    category: 'snack', cookTime: 30, protein: 14, calories: 260,
-    ingredients: ['1/2 cup urad dal vadas', 'Thick curd', 'Tamarind chutney', 'Green chutney', 'Chaat masala', 'Cumin', 'Red chilli'],
-    steps: ['Soak vadas in water', 'Squeeze and place in curd', 'Add both chutneys', 'Sprinkle masalas', 'Refrigerate 30 minutes', 'Serve chilled'],
-    seniorTip: 'Soaked vadas are much lighter than fried. Curd adds protein. Excellent cooling snack for summers.',
-    tags: ['high-protein', 'vegetarian', 'cooling', 'probiotic', 'summer-special']
+    id: 'bj24', name: 'Moringa Leaf Powder Drink', hindiName: 'सहजन पत्ती पाउडर',
+    category: 'breakfast', cookTime: 3, protein: 4, calories: 40,
+    healthTag: 'bone-joint',
+    ingredients: ['1 tsp moringa powder', 'Warm water', 'Lemon', 'Honey', 'Ginger'],
+    steps: ['Mix moringa powder in warm water', 'Add lemon juice', 'Add honey', 'Add ginger juice', 'Stir well', 'Drink 30 minutes before breakfast'],
+    seniorTip: 'Moringa has 17x more calcium than milk. Daily moringa drink is best bone supplement for seniors. No side effects.',
+    tags: ['bone-joint', 'moringa', 'calcium-17x-milk', 'superfood', 'daily-supplement']
   },
   {
-    id: 's20', name: 'Protein Bar Homemade', hindiName: 'प्रोटीन बार',
-    category: 'snack', cookTime: 20, protein: 16, calories: 240,
-    ingredients: ['3 tbsp peanut butter', '2 tbsp oats', '2 tbsp honey', '1 tbsp chia seeds', '2 tbsp protein powder', 'Mixed nuts', 'Dates'],
-    steps: ['Blend dates until sticky paste', 'Mix with peanut butter', 'Add oats, protein powder, seeds', 'Mix thoroughly', 'Press into tray', 'Refrigerate 2 hours and cut'],
-    seniorTip: 'Homemade protein bar without preservatives. Perfect pre or post workout snack. Make weekly batch.',
-    tags: ['very-high-protein', 'vegetarian', 'homemade', 'pre-workout', 'meal-prep']
-  },
-  {
-    id: 's21', name: 'Coconut Chutney with Idli', hindiName: 'नारियल चटनी इडली',
-    category: 'snack', cookTime: 15, protein: 10, calories: 200,
-    ingredients: ['2 idlis', 'Fresh coconut', 'Roasted chana dal', 'Green chilli', 'Ginger', 'Mustard seeds', 'Curry leaves'],
-    steps: ['Blend coconut with chana dal', 'Add chilli and ginger', 'Make thick chutney', 'Temper mustard seeds', 'Serve idli with chutney', 'Add sambar on side'],
-    seniorTip: 'Idli is probiotic fermented food. Chana dal in chutney adds protein. Excellent South Indian snack.',
-    tags: ['high-protein', 'vegetarian', 'south-indian', 'probiotic']
-  },
-  {
-    id: 's22', name: 'Sattu Laddoo', hindiName: 'सत्तू लड्डू',
-    category: 'snack', cookTime: 15, protein: 14, calories: 220,
-    ingredients: ['1 cup sattu', 'Ghee', 'Jaggery powder', 'Cardamom', 'Fennel seeds', 'Desiccated coconut'],
-    steps: ['Mix sattu with ghee', 'Add jaggery and spices', 'Add coconut and mix', 'Form into firm balls', 'If dry add more ghee', 'Store in cool place'],
-    seniorTip: 'Sattu is Bihar\'s protein powerhouse. High protein energy ball. Perfect pre-workout or travel snack.',
-    tags: ['high-protein', 'vegetarian', 'bihar', 'traditional', 'energy']
-  },
-  {
-    id: 's23', name: 'Methi Seeds Water', hindiName: 'मेथी बीज पानी',
-    category: 'snack', cookTime: 5, protein: 4, calories: 40,
-    ingredients: ['1 tsp methi seeds', '1 glass warm water', 'Lemon optional', 'Honey optional'],
-    steps: ['Soak methi seeds overnight', 'Morning drink soaked water', 'Or boil briefly and cool', 'Add lemon if desired', 'Drink on empty stomach', 'Eat soaked seeds too'],
-    seniorTip: 'Methi water controls blood sugar, cholesterol, and joint pain. Essential daily ritual for 60+ adults.',
-    tags: ['diabetic-friendly', 'vegetarian', 'medicinal', 'daily-ritual', 'joint-health']
-  },
-  {
-    id: 's24', name: 'Protein Lassi', hindiName: 'प्रोटीन लस्सी',
-    category: 'snack', cookTime: 5, protein: 18, calories: 220,
-    ingredients: ['200ml thick curd', '50ml milk', '1 tbsp honey', '1 tsp cardamom', 'Rose water', 'Ice cubes', 'Saffron'],
-    steps: ['Blend curd and milk', 'Add honey and cardamom', 'Add rose water and saffron', 'Blend with ice', 'Pour in glass', 'Serve immediately'],
-    seniorTip: 'Lassi is traditional Punjabi protein drink. Curd protein + milk protein = 18g in one glass.',
-    tags: ['high-protein', 'vegetarian', 'punjabi', 'traditional', 'cooling']
-  },
-  {
-    id: 's25', name: 'Peanut Chikki', hindiName: 'मूंगफली चिक्की',
-    category: 'snack', cookTime: 20, protein: 10, calories: 200,
-    ingredients: ['1 cup peanuts', 'Jaggery', 'Ghee', 'Cardamom'],
-    steps: ['Roast peanuts and remove skin', 'Melt jaggery with ghee', 'Cook until string consistency', 'Add peanuts quickly', 'Spread on greased plate', 'Cut while warm', 'Store when cool'],
-    seniorTip: 'Chikki is traditional high protein sweet. Jaggery provides iron. Better than chocolate for seniors.',
-    tags: ['high-protein', 'vegetarian', 'traditional', 'sweet', 'iron-rich']
+    id: 'bj25', name: 'Curd Rice with Til', hindiName: 'तिल दही चावल',
+    category: 'dinner', cookTime: 10, protein: 12, calories: 300,
+    healthTag: 'bone-joint',
+    ingredients: ['1 cup cooked rice', '200g thick curd', '1 tbsp sesame seeds toasted', 'Mustard seeds', 'Curry leaves', 'Ginger', 'Salt'],
+    steps: ['Mix rice and curd well', 'Toast sesame seeds until golden', 'Make mustard temper', 'Add ginger to temper', 'Pour over rice mixture', 'Top with toasted sesame'],
+    seniorTip: 'South Indian curd rice with sesame is traditional bone health dinner. Calcium from curd plus sesame daily.',
+    tags: ['bone-joint', 'calcium', 'sesame', 'probiotic', 'traditional', 'south-indian']
   },
 ];
 
 export default function RecipeGuide({ profile }: RecipeGuideProps) {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
+  const [healthFilter, setHealthFilter] = useState('all');
   const [expanded, setExpanded] = useState<string | null>(null);
   const [favourites, setFavourites] = useState<string[]>([]);
 
-  const categories = [
-    { id: 'all', label: '🍽️ All' },
+  const mealCategories = [
+    { id: 'all', label: '🍽️ All Meals' },
     { id: 'breakfast', label: '🌅 Breakfast' },
     { id: 'lunch', label: '☀️ Lunch' },
     { id: 'dinner', label: '🌙 Dinner' },
     { id: 'snack', label: '🍎 Snack' },
+  ];
+
+  const healthCategories = [
+    { id: 'all', label: '✅ All' },
+    { id: 'weight-loss', label: '⚖️ Weight Loss' },
+    { id: 'heart-health', label: '❤️ Heart' },
+    { id: 'diabetes', label: '🩺 Diabetes' },
+    { id: 'bone-joint', label: '🦴 Bone & Joint' },
+    { id: 'favourites', label: '❤️ Saved' },
   ];
 
   function toggleFavourite(id: string) {
@@ -855,14 +980,16 @@ export default function RecipeGuide({ profile }: RecipeGuideProps) {
   }
 
   const filtered = ALL_RECIPES.filter((r) => {
-    const matchCat = category === 'all' || r.category === category;
-    const matchFav = category === 'favourites' ? favourites.includes(r.id) : true;
+    const matchMeal = category === 'all' || r.category === category;
+    const matchHealth = healthFilter === 'all' || healthFilter === 'favourites'
+      ? healthFilter === 'favourites' ? favourites.includes(r.id) : true
+      : r.healthTag === healthFilter;
     const matchSearch =
       search === '' ||
       r.name.toLowerCase().includes(search.toLowerCase()) ||
       r.hindiName.includes(search) ||
       r.tags.some((t) => t.includes(search.toLowerCase()));
-    return matchCat && matchSearch && matchFav;
+    return matchMeal && matchHealth && matchSearch;
   });
 
   if (!profile) {
@@ -871,6 +998,7 @@ export default function RecipeGuide({ profile }: RecipeGuideProps) {
         <div className="bg-orange-50 border-2 border-orange-200 rounded-2xl p-8">
           <ChefHat size={40} className="text-orange-400 mx-auto mb-3" />
           <p className="text-orange-800 font-bold text-lg">Set Up Your Profile First</p>
+          <p className="text-orange-600 text-sm mt-1">Go to Profile tab to get started</p>
         </div>
       </div>
     );
@@ -878,47 +1006,53 @@ export default function RecipeGuide({ profile }: RecipeGuideProps) {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      <div className="mb-6">
-        <h2 className="text-3xl font-bold text-gray-900">Recipe Guide</h2>
-        <p className="text-gray-500 mt-1">100 Indian high-protein recipes for 60+ adults</p>
+
+      {/* Header */}
+      <div className="mb-5">
+        <h2 className="text-3xl font-bold text-gray-900">Healthy Recipes</h2>
+        <p className="text-gray-500 mt-1">100 medically-designed recipes for 60+ adults</p>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-3 mb-5">
-        <div className="bg-white border border-gray-200 rounded-2xl p-3 text-center">
-          <p className="text-2xl font-bold text-orange-500">100</p>
-          <p className="text-xs text-gray-400">Recipes</p>
+      {/* Health Stats */}
+      <div className="grid grid-cols-4 gap-2 mb-5">
+        <div className="bg-orange-50 border border-orange-200 rounded-xl p-2 text-center">
+          <p className="text-lg font-bold text-orange-600">25</p>
+          <p className="text-xs text-gray-500">⚖️ Weight</p>
         </div>
-        <div className="bg-white border border-gray-200 rounded-2xl p-3 text-center">
-          <p className="text-2xl font-bold text-emerald-500">{filtered.length}</p>
-          <p className="text-xs text-gray-400">Showing</p>
+        <div className="bg-red-50 border border-red-200 rounded-xl p-2 text-center">
+          <p className="text-lg font-bold text-red-600">25</p>
+          <p className="text-xs text-gray-500">❤️ Heart</p>
         </div>
-        <div className="bg-white border border-gray-200 rounded-2xl p-3 text-center">
-          <p className="text-2xl font-bold text-red-400">{favourites.length}</p>
-          <p className="text-xs text-gray-400">Favourites ❤️</p>
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-2 text-center">
+          <p className="text-lg font-bold text-blue-600">25</p>
+          <p className="text-xs text-gray-500">🩺 Diabetes</p>
+        </div>
+        <div className="bg-green-50 border border-green-200 rounded-xl p-2 text-center">
+          <p className="text-lg font-bold text-green-600">25</p>
+          <p className="text-xs text-gray-500">🦴 Bones</p>
         </div>
       </div>
 
       {/* Search */}
-      <div className="relative mb-4">
+      <div className="relative mb-3">
         <Search size={18} className="absolute left-3 top-3.5 text-gray-400" />
         <input
           type="text"
-          placeholder="Search recipes, ingredients, tags..."
+          placeholder="Search recipes, ingredients..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-orange-400"
         />
       </div>
 
-      {/* Category Filter */}
-      <div className="flex gap-2 mb-5 overflow-x-auto scrollbar-hide">
-        {categories.map((cat) => (
+      {/* Health Filter */}
+      <div className="flex gap-2 mb-3 overflow-x-auto scrollbar-hide">
+        {healthCategories.map((cat) => (
           <button
             key={cat.id}
-            onClick={() => setCategory(cat.id)}
-            className={`px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all ${
-              category === cat.id
+            onClick={() => setHealthFilter(cat.id)}
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
+              healthFilter === cat.id
                 ? 'bg-orange-500 text-white shadow-md'
                 : 'bg-white border border-gray-200 text-gray-600'
             }`}
@@ -926,17 +1060,26 @@ export default function RecipeGuide({ profile }: RecipeGuideProps) {
             {cat.label}
           </button>
         ))}
-        <button
-          onClick={() => setCategory('favourites')}
-          className={`px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all ${
-            category === 'favourites'
-              ? 'bg-red-500 text-white shadow-md'
-              : 'bg-white border border-gray-200 text-gray-600'
-          }`}
-        >
-          ❤️ Saved
-        </button>
       </div>
+
+      {/* Meal Filter */}
+      <div className="flex gap-2 mb-4 overflow-x-auto scrollbar-hide">
+        {mealCategories.map((cat) => (
+          <button
+            key={cat.id}
+            onClick={() => setCategory(cat.id)}
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
+              category === cat.id
+                ? 'bg-gray-800 text-white shadow-md'
+                : 'bg-white border border-gray-200 text-gray-600'
+            }`}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
+      <p className="text-sm text-gray-400 mb-3">Showing {filtered.length} recipes</p>
 
       {/* Recipe Cards */}
       <div className="space-y-3">
@@ -947,12 +1090,12 @@ export default function RecipeGuide({ profile }: RecipeGuideProps) {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 flex-wrap mb-1">
                     <p className="font-bold text-gray-900">{recipe.name}</p>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${categoryColors[recipe.category]}`}>
-                      {recipe.category}
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${healthColors[recipe.healthTag]}`}>
+                      {healthLabels[recipe.healthTag]}
                     </span>
                   </div>
                   <p className="text-sm text-gray-400 mb-2">{recipe.hindiName}</p>
-                  <div className="flex items-center gap-4 text-sm">
+                  <div className="flex items-center gap-3 text-sm flex-wrap">
                     <span className="flex items-center gap-1 text-orange-500 font-bold">
                       <Zap size={14} />{recipe.protein}g protein
                     </span>
@@ -960,6 +1103,9 @@ export default function RecipeGuide({ profile }: RecipeGuideProps) {
                       <Clock size={14} />{recipe.cookTime} mins
                     </span>
                     <span className="text-gray-400">{recipe.calories} cal</span>
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${categoryColors[recipe.category]}`}>
+                      {recipe.category}
+                    </span>
                   </div>
                 </div>
                 <button onClick={(e) => { e.stopPropagation(); toggleFavourite(recipe.id); }} className="ml-2 p-1">
@@ -993,7 +1139,7 @@ export default function RecipeGuide({ profile }: RecipeGuideProps) {
                   </ol>
                 </div>
                 <div className="bg-amber-50 border border-amber-100 rounded-xl p-3">
-                  <p className="text-xs font-bold text-amber-700 mb-1">👴 Senior Tip (60+)</p>
+                  <p className="text-xs font-bold text-amber-700 mb-1">👴 Senior Health Tip</p>
                   <p className="text-sm text-amber-800">{recipe.seniorTip}</p>
                 </div>
                 <div className="flex flex-wrap gap-1.5 mt-3">
@@ -1011,9 +1157,10 @@ export default function RecipeGuide({ profile }: RecipeGuideProps) {
         <div className="text-center py-12 text-gray-400">
           <ChefHat size={40} className="mx-auto mb-3 opacity-30" />
           <p className="font-medium">No recipes found</p>
-          <p className="text-sm mt-1">Try a different search or category</p>
+          <p className="text-sm mt-1">Try different filters</p>
         </div>
       )}
+
     </div>
   );
 }
