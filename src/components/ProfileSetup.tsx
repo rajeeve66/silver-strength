@@ -71,6 +71,7 @@ export default function ProfileSetup({ profile, onSave }: ProfileSetupProps) {
     let err = null;
 
     if (profile?.id) {
+      // Update existing profile
       const result = await supabase
         .from('profiles')
         .update(payload)
@@ -80,13 +81,19 @@ export default function ProfileSetup({ profile, onSave }: ProfileSetupProps) {
       data = result.data;
       err = result.error;
     } else {
-      const result = await supabase.from('profiles').insert(payload).select().maybeSingle();
+      // Create new profile using upsert to avoid duplicate errors
+      const result = await supabase
+        .from('profiles')
+        .upsert(payload, { onConflict: 'session_id' })
+        .select()
+        .maybeSingle();
       data = result.data;
       err = result.error;
     }
 
     setSaving(false);
     if (err) {
+      console.error('Save error:', err);
       setError('Failed to save profile. Please try again.');
     } else if (data) {
       setSuccess(true);
@@ -192,7 +199,7 @@ export default function ProfileSetup({ profile, onSave }: ProfileSetupProps) {
         {success && (
           <div className="flex items-center gap-2 text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
             <Save size={18} />
-            <span className="text-sm font-medium">Profile saved successfully!</span>
+            <span className="text-sm font-medium">Profile saved successfully! ✅</span>
           </div>
         )}
 
@@ -207,7 +214,9 @@ export default function ProfileSetup({ profile, onSave }: ProfileSetupProps) {
       </div>
 
       <div className="mt-6 bg-amber-50 border border-amber-200 rounded-2xl p-5">
-        <h3 className="font-bold text-amber-800 text-base mb-2">Healthy Weight Range for Indian Men (60+)</h3>
+        <h3 className="font-bold text-amber-800 text-base mb-2">
+          Healthy Weight Range for Indian Men (60+)
+        </h3>
         <ul className="space-y-1 text-sm text-amber-700">
           <li>• BMI between 22–25 is considered ideal for older adults in India</li>
           <li>• Aim for 0.5–1 kg of fat loss per week — slow and sustainable</li>
