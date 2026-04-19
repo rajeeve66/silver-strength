@@ -6,8 +6,7 @@ interface NavigationProps {
   onTabChange: (tab: Tab) => void;
 }
 
-const tabs: { id: Tab; label: string; icon: React.ComponentType<{ size?: number; className?: string }> }[] = [
-  { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
+const tabs: { id: Tab; label: string; icon: any }[] = [  { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
   { id: 'workout', label: 'Workouts', icon: Dumbbell },
   { id: 'protein', label: 'Nutrition', icon: Apple },
   { id: 'tracker', label: 'Progress', icon: TrendingUp },
