@@ -76,7 +76,7 @@ Return ONLY a valid JSON array with exactly this structure, no other text:
 ]`;
 
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyDQvD35so-Xn9McOcR8UYmAFWs_R1c1aok}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
