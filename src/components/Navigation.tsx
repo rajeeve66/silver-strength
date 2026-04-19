@@ -12,8 +12,8 @@ const tabs: { id: Tab; label: string; icon: React.ComponentType<{ size?: number;
   { id: 'protein', label: 'Nutrition', icon: Apple },
   { id: 'tracker', label: 'Progress', icon: TrendingUp },
   { id: 'profile', label: 'Profile', icon: User },
+  { id: 'streak', label: 'Streak', icon: Flame },
 ];
-{ id: 'streak', label: 'Streak', icon: Flame },
 
 export default function Navigation({ activeTab, onTabChange }: NavigationProps) {
   return (
