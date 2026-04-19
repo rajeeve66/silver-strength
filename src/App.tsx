@@ -8,6 +8,7 @@ import ProteinGuide from './components/ProteinGuide';
 import WeightTracker from './components/WeightTracker';
 import ProfileSetup from './components/ProfileSetup';
 import StreakTracker from './components/StreakTracker';
+import RecipeGuide from './components/RecipeGuide';
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -48,6 +49,7 @@ export default function App() {
         )}
         {activeTab === 'workout' && <WorkoutDashboard />}
         {activeTab === 'streak' && <StreakTracker profile={profile} />}
+        {activeTab === 'recipes' && <RecipeGuide profile={profile} />}
         {activeTab === 'protein' && <ProteinGuide />}
         {activeTab === 'tracker' && <WeightTracker profile={profile} />}
         {activeTab === 'profile' && (

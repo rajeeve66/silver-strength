@@ -1,8 +1,5 @@
 import { Tab } from '../types';
-import {
-  LayoutDashboard, Dumbbell, Apple,
-  TrendingUp, User, Flame
-} from 'lucide-react';
+import { Dumbbell, Apple, TrendingUp, User, LayoutDashboard, Flame, UtensilsCrossed } from 'lucide-react';
 
 interface NavigationProps {
   activeTab: Tab;
@@ -15,6 +12,7 @@ const tabs: { id: Tab; label: string; icon: any }[] = [
   { id: 'protein', label: 'Nutrition', icon: Apple },
   { id: 'tracker', label: 'Progress', icon: TrendingUp },
   { id: 'streak', label: 'Streak', icon: Flame },
+  { id: 'recipes', label: 'Recipes', icon: UtensilsCrossed },
   { id: 'profile', label: 'Profile', icon: User },
 ];
 

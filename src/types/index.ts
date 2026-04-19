@@ -43,4 +43,4 @@ export interface ProteinFood {
   icon: string;
 }
 
-export type Tab = 'dashboard' | 'workout' | 'protein' | 'tracker' | 'profile' | 'streak';
+export type Tab = 'dashboard' | 'workout' | 'protein' | 'tracker' | 'profile' | 'streak' | 'recipes';
