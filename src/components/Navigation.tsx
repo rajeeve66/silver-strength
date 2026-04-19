@@ -1,4 +1,4 @@
-import { Dumbbell, Apple, TrendingUp, User, LayoutDashboard } from 'lucide-react';
+import { Dumbbell, Apple, TrendingUp, User, LayoutDashboard, Flame } from 'lucide-react';
 import { Tab } from '../types';
 
 interface NavigationProps {
@@ -13,6 +13,7 @@ const tabs: { id: Tab; label: string; icon: React.ComponentType<{ size?: number;
   { id: 'tracker', label: 'Progress', icon: TrendingUp },
   { id: 'profile', label: 'Profile', icon: User },
 ];
+{ id: 'streak', label: 'Streak', icon: Flame },
 
 export default function Navigation({ activeTab, onTabChange }: NavigationProps) {
   return (
