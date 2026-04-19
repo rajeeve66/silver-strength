@@ -42,7 +42,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
-      <main className="pb-12">
+      <main className="pb-20">
         {activeTab === 'dashboard' && (
           <Dashboard profile={profile} onNavigate={setActiveTab} />
         )}
