@@ -27,6 +27,9 @@ const categoryColors: Record<string, string> = {
   snack: 'bg-purple-100 text-purple-700',
 };
 
+const GEMINI_KEY = 'AIzaSyDQvD35so-Xn9McOcR8UYmAFWs_R1c1aok';
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`;
+
 export default function RecipeGuide({ profile }: RecipeGuideProps) {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
@@ -64,44 +67,43 @@ Return ONLY a valid JSON array with exactly this structure, no other text:
     "id": "unique_id",
     "name": "Recipe Name in English",
     "hindiName": "Recipe Name in Hindi",
-    "category": "breakfast|lunch|dinner|snack",
+    "category": "breakfast",
     "cookTime": 20,
     "protein": 25,
     "calories": 350,
-    "ingredients": ["ingredient 1 with quantity", "ingredient 2 with quantity"],
+    "ingredients": ["ingredient 1 with quantity", "ingredient 2"],
     "steps": ["Step 1", "Step 2", "Step 3"],
     "seniorTip": "Special tip for 60+ adults",
     "tags": ["high-protein", "weight-loss"]
   }
 ]`;
 
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyDQvD35so-Xn9McOcR8UYmAFWs_R1c1aok}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: {
-              temperature: 0.7,
-              maxOutputTokens: 4000,
-            },
-          }),
-        }
-      );
+      const response = await fetch(GEMINI_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 4000,
+          },
+        }),
+      });
 
       const data = await response.json();
-      const text = data.candidates[0].content.parts[0].text;
 
-      // Extract JSON from response
+      if (data.error) {
+        throw new Error(data.error.message);
+      }
+
+      const text = data.candidates[0].content.parts[0].text;
       const jsonMatch = text.match(/\[[\s\S]*\]/);
       if (!jsonMatch) throw new Error('Invalid response');
-
       const parsed = JSON.parse(jsonMatch[0]);
       setRecipes(parsed);
       setGenerated(true);
-    } catch (err) {
-      setError('Failed to generate recipes. Please try again.');
+    } catch (err: any) {
+      setError(`Failed: ${err.message || 'Please try again.'}`);
       console.error(err);
     }
     setLoading(false);
@@ -112,38 +114,26 @@ Return ONLY a valid JSON array with exactly this structure, no other text:
     setError('');
     try {
       const existing = recipes.map((r) => r.name).join(', ');
-      const prompt = `Generate 8 MORE high-protein Indian recipes for a ${profile?.age || 60}-year-old person.
-      
-Already generated: ${existing}
-      
-DO NOT repeat these recipes. Generate completely different ones.
-Same requirements: high protein 15g+, Indian ingredients, senior-friendly, weight loss.
+      const prompt = `Generate 8 MORE high-protein Indian recipes. Already generated: ${existing}. DO NOT repeat. Same requirements: high protein 15g+, Indian ingredients, senior-friendly, weight loss. Return ONLY valid JSON array same structure.`;
 
-Return ONLY valid JSON array same structure as before.`;
-
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${import.meta.env.}`AIzaSyDQvD35so-Xn9McOcR8UYmAFWs_R1c1aok,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: {
-              temperature: 1.0,
-              maxOutputTokens: 6000,
-            },
-          }),
-        }
-      );
+      const response = await fetch(GEMINI_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.9, maxOutputTokens: 3000 },
+        }),
+      });
 
       const data = await response.json();
+      if (data.error) throw new Error(data.error.message);
       const text = data.candidates[0].content.parts[0].text;
       const jsonMatch = text.match(/\[[\s\S]*\]/);
       if (!jsonMatch) throw new Error('Invalid response');
       const parsed = JSON.parse(jsonMatch[0]);
       setRecipes((prev) => [...prev, ...parsed]);
-    } catch (err) {
-      setError('Failed to generate more recipes. Try again.');
+    } catch (err: any) {
+      setError(`Failed: ${err.message || 'Try again.'}`);
     }
     setLoading(false);
   }
@@ -170,9 +160,7 @@ Return ONLY valid JSON array same structure as before.`;
         <div className="bg-orange-50 border-2 border-orange-200 rounded-2xl p-8">
           <ChefHat size={40} className="text-orange-400 mx-auto mb-3" />
           <p className="text-orange-800 font-bold text-lg">Set Up Your Profile First</p>
-          <p className="text-orange-600 text-sm mt-1">
-            AI needs your age and weight to suggest perfect recipes!
-          </p>
+          <p className="text-orange-600 text-sm mt-1">AI needs your age and weight!</p>
         </div>
       </div>
     );
@@ -180,8 +168,6 @@ Return ONLY valid JSON array same structure as before.`;
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-
-      {/* Header */}
       <div className="mb-6">
         <h2 className="text-3xl font-bold text-gray-900">AI Recipes</h2>
         <p className="text-gray-500 mt-1">
@@ -189,13 +175,12 @@ Return ONLY valid JSON array same structure as before.`;
         </p>
       </div>
 
-      {/* Generate Button */}
       {!generated ? (
         <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-6 mb-6 text-white text-center">
           <ChefHat size={48} className="mx-auto mb-3 text-orange-200" />
           <p className="font-bold text-xl mb-2">Get Your Personal Recipe Plan!</p>
           <p className="text-orange-100 text-sm mb-4">
-            AI will generate 12 high-protein Indian recipes personalised for your age, weight and goal
+            AI will generate 12 high-protein Indian recipes personalised for you
           </p>
           <button
             onClick={generateRecipes}
@@ -203,21 +188,14 @@ Return ONLY valid JSON array same structure as before.`;
             className="bg-white text-orange-600 font-bold px-8 py-3 rounded-xl hover:bg-orange-50 transition-colors disabled:opacity-70 flex items-center gap-2 mx-auto"
           >
             {loading ? (
-              <>
-                <Loader size={20} className="animate-spin" />
-                Generating your recipes...
-              </>
+              <><Loader size={20} className="animate-spin" />Generating...</>
             ) : (
-              <>
-                <ChefHat size={20} />
-                Generate My Recipes! 🍽️
-              </>
+              <><ChefHat size={20} />Generate My Recipes! 🍽️</>
             )}
           </button>
         </div>
       ) : (
         <>
-          {/* Search */}
           <div className="relative mb-4">
             <Search size={18} className="absolute left-3 top-3.5 text-gray-400" />
             <input
@@ -228,8 +206,6 @@ Return ONLY valid JSON array same structure as before.`;
               className="w-full border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-orange-400"
             />
           </div>
-
-          {/* Category Filter */}
           <div className="flex gap-2 mb-5 overflow-x-auto scrollbar-hide">
             {categories.map((cat) => (
               <button
@@ -245,12 +221,10 @@ Return ONLY valid JSON array same structure as before.`;
               </button>
             ))}
           </div>
-
-          {/* Stats */}
           <div className="grid grid-cols-3 gap-3 mb-5">
             <div className="bg-white border border-gray-200 rounded-2xl p-3 text-center">
               <p className="text-2xl font-bold text-orange-500">{recipes.length}</p>
-              <p className="text-xs text-gray-400">Total Recipes</p>
+              <p className="text-xs text-gray-400">Total</p>
             </div>
             <div className="bg-white border border-gray-200 rounded-2xl p-3 text-center">
               <p className="text-2xl font-bold text-emerald-500">{filtered.length}</p>
@@ -264,27 +238,16 @@ Return ONLY valid JSON array same structure as before.`;
         </>
       )}
 
-      {/* Error */}
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-xl p-3 mb-4">
           <p className="text-red-600 text-sm font-medium">{error}</p>
         </div>
       )}
 
-      {/* Recipe Cards */}
       <div className="space-y-3">
         {filtered.map((recipe) => (
-          <div
-            key={recipe.id}
-            className="bg-white border border-gray-200 rounded-2xl overflow-hidden"
-          >
-            {/* Recipe Header */}
-            <div
-              className="p-4 cursor-pointer"
-              onClick={() =>
-                setExpanded(expanded === recipe.id ? null : recipe.id)
-              }
-            >
+          <div key={recipe.id} className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
+            <div className="p-4 cursor-pointer" onClick={() => setExpanded(expanded === recipe.id ? null : recipe.id)}>
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 flex-wrap mb-1">
@@ -296,89 +259,51 @@ Return ONLY valid JSON array same structure as before.`;
                   <p className="text-sm text-gray-400 mb-2">{recipe.hindiName}</p>
                   <div className="flex items-center gap-4 text-sm">
                     <span className="flex items-center gap-1 text-orange-500 font-bold">
-                      <Zap size={14} />
-                      {recipe.protein}g protein
+                      <Zap size={14} />{recipe.protein}g protein
                     </span>
                     <span className="flex items-center gap-1 text-gray-400">
-                      <Clock size={14} />
-                      {recipe.cookTime} mins
+                      <Clock size={14} />{recipe.cookTime} mins
                     </span>
-                    <span className="text-gray-400">
-                      {recipe.calories} cal
-                    </span>
+                    <span className="text-gray-400">{recipe.calories} cal</span>
                   </div>
                 </div>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleFavourite(recipe.id);
-                  }}
-                  className="ml-2 p-1"
-                >
-                  <Heart
-                    size={20}
-                    className={favourites.includes(recipe.id)
-                      ? 'text-red-500 fill-red-500'
-                      : 'text-gray-300'
-                    }
-                  />
+                <button onClick={(e) => { e.stopPropagation(); toggleFavourite(recipe.id); }} className="ml-2 p-1">
+                  <Heart size={20} className={favourites.includes(recipe.id) ? 'text-red-500 fill-red-500' : 'text-gray-300'} />
                 </button>
               </div>
             </div>
 
-            {/* Expanded Recipe Details */}
             {expanded === recipe.id && (
               <div className="px-4 pb-4 border-t border-gray-100">
-
-                {/* Ingredients */}
                 <div className="mt-3 mb-3">
-                  <p className="font-bold text-gray-800 text-sm mb-2">
-                    🛒 Ingredients
-                  </p>
+                  <p className="font-bold text-gray-800 text-sm mb-2">🛒 Ingredients</p>
                   <ul className="space-y-1">
                     {recipe.ingredients.map((ing, i) => (
                       <li key={i} className="text-sm text-gray-600 flex items-start gap-2">
-                        <span className="text-orange-400 mt-1">•</span>
-                        {ing}
+                        <span className="text-orange-400 mt-1">•</span>{ing}
                       </li>
                     ))}
                   </ul>
                 </div>
-
-                {/* Steps */}
                 <div className="mb-3">
-                  <p className="font-bold text-gray-800 text-sm mb-2">
-                    👨‍🍳 How to Make
-                  </p>
+                  <p className="font-bold text-gray-800 text-sm mb-2">👨‍🍳 How to Make</p>
                   <ol className="space-y-2">
                     {recipe.steps.map((step, i) => (
                       <li key={i} className="text-sm text-gray-600 flex items-start gap-2">
                         <span className="bg-orange-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
                           {i + 1}
-                        </span>
-                        {step}
+                        </span>{step}
                       </li>
                     ))}
                   </ol>
                 </div>
-
-                {/* Senior Tip */}
                 <div className="bg-amber-50 border border-amber-100 rounded-xl p-3">
-                  <p className="text-xs font-bold text-amber-700 mb-1">
-                    👴 Senior Tip (60+)
-                  </p>
+                  <p className="text-xs font-bold text-amber-700 mb-1">👴 Senior Tip (60+)</p>
                   <p className="text-sm text-amber-800">{recipe.seniorTip}</p>
                 </div>
-
-                {/* Tags */}
                 <div className="flex flex-wrap gap-1.5 mt-3">
                   {recipe.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded-full"
-                    >
-                      #{tag}
-                    </span>
+                    <span key={tag} className="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded-full">#{tag}</span>
                   ))}
                 </div>
               </div>
@@ -387,7 +312,6 @@ Return ONLY valid JSON array same structure as before.`;
         ))}
       </div>
 
-      {/* Load More Button */}
       {generated && (
         <button
           onClick={generateMore}
@@ -395,19 +319,12 @@ Return ONLY valid JSON array same structure as before.`;
           className="w-full mt-6 bg-orange-500 text-white py-4 rounded-xl font-bold text-lg hover:bg-orange-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {loading ? (
-            <>
-              <Loader size={20} className="animate-spin" />
-              Generating more...
-            </>
+            <><Loader size={20} className="animate-spin" />Generating more...</>
           ) : (
-            <>
-              <ChefHat size={20} />
-              Generate 8 More Recipes! ✨
-            </>
+            <><ChefHat size={20} />Generate 8 More Recipes! ✨</>
           )}
         </button>
       )}
-
     </div>
   );
 }
